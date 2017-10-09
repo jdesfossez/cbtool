@@ -92,7 +92,7 @@ shell
 echo
 imgdelete
 DNRTT
-cldattach sim TESTCLOUD
+cldattach sim TESTCLOUD use_default_if_available
 cldattach
 clddefault
 cldlist
@@ -182,156 +182,156 @@ help
 shell
 imgdelete
 echo
-shell TESTCLOUD date
-cldlist\; clddefault none\; clddefault
-roleshow TESTCLOUD tinyvm
-typeshow TESTCLOUD ibm_daytrader
-patternshow TESTCLOUD simplehd
-viewlist TESTCLOUD
-cldshow TESTCLOUD all
-cldalter TESTCLOUD time experiment_id=REGRESSION_A
-expid TESTCLOUD REGRESSION_B
-stats TESTCLOUD
-waitfor TESTCLOUD 10s
-vmcattach TESTCLOUD simzone_a\; vmclist TESTCLOUD\; vmcshow TESTCLOUD simzone_a\; stats TESTCLOUD
-vmccleanup TESTCLOUD simzone_a
-vmcattach TESTCLOUD simzone_b async\; waitfor TESTCLOUD 8s\; vmclist TESTCLOUD\; vmcshow TESTCLOUD simzone_b update_attempts,update_frequency\; stats TESTCLOUD
-vmcattach TESTCLOUD simzone_c update_attempts=78,update_frequency=3\; vmclist TESTCLOUD\; vmcshow TESTCLOUD simzone_c update_attempts,update_frequency\; stats TESTCLOUD
-vmcattach TESTCLOUD simzone_d update_attempts=156,update_frequency=6 async\; waitfor TESTCLOUD 8s\; vmclist TESTCLOUD\; vmcshow TESTCLOUD simzone_d update_attempts,update_frequency\; stats TESTCLOUD
-vmcdetach TESTCLOUD simzone_d\; vmcdetach TESTCLOUD simzone_c\; vmcdetach TESTCLOUD simzone_b\; vmclist TESTCLOUD\; stats TESTCLOUD
-vmcdetach TESTCLOUD simzone_a async\; waitfor TESTCLOUD 8s\; vmclist TESTCLOUD\; stats TESTCLOUD
-vmcattach TESTCLOUD all\; vmclist TESTCLOUD\; stats TESTCLOUD
-vmcattach TESTCLOUD all\; vmclist TESTCLOUD\; stats TESTCLOUD
-vmcdetach TESTCLOUD simzone_a\; vmclist TESTCLOUD\; stats TESTCLOUD
-vmcdetach TESTCLOUD all\; vmclist TESTCLOUD\; stats TESTCLOUD
-vmcattach TESTCLOUD update_attempts=312,update_frequency=12 all\; vmclist TESTCLOUD\; vmcshow TESTCLOUD simzone_c update_attempts,update_frequency\; stats TESTCLOUD
-vmcdetach TESTCLOUD all async\; waitfor TESTCLOUD 8s\; vmclist TESTCLOUD\; stats TESTCLOUD
-vmcattach TESTCLOUD all async\; waitfor TESTCLOUD 8s\; vmclist TESTCLOUD\; vmcshow TESTCLOUD simzone_c update_attempts,update_frequency\; stats TESTCLOUD
-vmcalter TESTCLOUD simzone_a replication_vmcs=TESTE\; vmcshow TESTCLOUD simzone_a replication_vmcs
-hostlist TESTCLOUD
-hostshow TESTCLOUD simhosta3 all
-hostfail TESTCLOUD simhostc2 stonith
-hostrepair TESTCLOUD simhostc2 stonith
-poollist TESTCLOUD
-viewshow TESTCLOUD VMC pool sut
-vmattach TESTCLOUD tinyvm\; vmlist TESTCLOUD\; vmshow TESTCLOUD vm_1 vmc_name,vmc_pool,host_name,meta_tags,size\; stats TESTCLOUD
-vmlist TESTCLOUD
-vmshow TESTCLOUD vm_1 all
-vmattach TESTCLOUD tinyvm lg\; vmlist TESTCLOUD\; vmshow TESTCLOUD vm_2 vmc_name,vmc_pool,host_name,meta_tags,size\; stats TESTCLOUD
-vmattach TESTCLOUD tinyvm simhostb1\; vmlist TESTCLOUD\; vmshow TESTCLOUD vm_3 vmc_name,vmc_pool,host_name,meta_tags,size\; stats TESTCLOUD
-vmattach TESTCLOUD db2 auto a:b,x:y,r:2\; vmlist TESTCLOUD\; vmshow TESTCLOUD vm_4 vmc_name,vmc_pool,host_name,meta_tags,size\; stats TESTCLOUD
-vmattach TESTCLOUD netclient auto a:b,x:y,r:2 size=platinum64,vmc_pool=SUT\; vmlist TESTCLOUD\; vmshow TESTCLOUD vm_5 vmc_name,vmc_pool,host_name,meta_tags,size\; stats TESTCLOUD
-vmcapture TESTCLOUD vm_2\; vmlist TESTCLOUD\; stats TESTCLOUD
-vmattach TESTCLOUD tinyvm async\; waitfor TESTCLOUD 1s\; vmlist TESTCLOUD pending\; waitfor TESTCLOUD 8s\; vmlist TESTCLOUD\; stats TESTCLOUD
-vmattach TESTCLOUD tinyvm async=2\; waitfor TESTCLOUD 1s\; vmlist TESTCLOUD pending\; waituntil TESTCLOUD VM ARRIVED=8 increasing 1\; vmlist TESTCLOUD\; stats TESTCLOUD
-rolealter TESTCLOUD db2 size=platinum64
-vmattach TESTCLOUD db2 SUT A:B,X:Y,R:2 async\; waitfor TESTCLOUD 1s\; vmlist TESTCLOUD pending\; waitfor TESTCLOUD 8s\; vmlist TESTCLOUD\; vmshow TESTCLOUD vm_9 role,vmc_name,vmc_pool,host_name,meta_tags,size\; stats TESTCLOUD
-vmattach TESTCLOUD netclient simhosta2 A:B,X:Y,R:2 async\; waitfor TESTCLOUD 1s\; vmlist TESTCLOUD pending\; waitfor TESTCLOUD 8s\; vmlist TESTCLOUD\; vmshow TESTCLOUD vm_10 role,vmc_name,vmc_pool,host_name,meta_tags,size\; stats TESTCLOUD
-vmattach TESTCLOUD fen_hpc auto empty size=platinum64,vmc_pool=LG async\; waitfor TESTCLOUD 8s\; vmlist TESTCLOUD\; vmshow TESTCLOUD vm_11 vmc_name,vmc_pool,host_name,meta_tags,size\; stats TESTCLOUD
-vmattach TESTCLOUD tinyvm auto empty iron32 pause_provision_complete async\; waitfor TESTCLOUD 8s\; msgpub TESTCLOUD VM staging vm_12;continue;something\; waituntil TESTCLOUD VM ARRIVING=0 decreasing 1\; vmlist TESTCLOUD\; stats TESTCLOUD
-shell TESTCLOUD rm -rf /tmp/cb*_was_used_on_execution\; cldalter TESTCLOUD vm_defaults execute_script_name=CB_DIRECTORY/regression/scripts/execute_on_staging.sh\; vmattach TESTCLOUD tinyvm auto empty iron32 execute_provision_complete async\; waituntil TESTCLOUD VM ARRIVING=0 decreasing 1\; shell TESTCLOUD ls /tmp/cb*_was_used_on_execution\; vmlist TESTCLOUD\; stats TESTCLOUD
-vmattach TESTCLOUD predictablevm auto empty check_boot_started=subscribe_on_starting async\; waitfor TESTCLOUD 8s\; msgpub TESTCLOUD VM starting 11111111-1111-1111-1111-111111111111 has started\; waitfor TESTCLOUD 8s\; vmlist TESTCLOUD\; stats TESTCLOUD
-vmattach TESTCLOUD tinyvm\; vmlist TESTCLOUD\; stats TESTCLOUD
-vmattach TESTCLOUD tinyvm\; vmlist TESTCLOUD\; stats TESTCLOUD
-vmattach TESTCLOUD tinyvm\; vmlist TESTCLOUD\; stats TESTCLOUD
-vmattach TESTCLOUD tinyvm\; vmlist TESTCLOUD\; stats TESTCLOUD
-vmattach TESTCLOUD tinyvm\; vmlist TESTCLOUD\; stats TESTCLOUD
-vmattach TESTCLOUD tinyvm\; vmlist TESTCLOUD\; stats TESTCLOUD
-vmattach TESTCLOUD tinyvm\; vmlist TESTCLOUD\; stats TESTCLOUD
-vmattach TESTCLOUD tinyvm\; vmlist TESTCLOUD\; stats TESTCLOUD
-vmlist TESTCLOUD finished
-vmlist TESTCLOUD failed 
-stateshow TESTCLOUD
-vmrunstate TESTCLOUD vm_3 suspend\; stateshow TESTCLOUD\; stats TESTCLOUD
-vmrunstate TESTCLOUD vm_3 attached\; stateshow TESTCLOUD\; stats TESTCLOUD
-vmfail TESTCLOUD vm_3\; stateshow TESTCLOUD\; stats TESTCLOUD
-vmrepair TESTCLOUD vm_3\; stateshow TESTCLOUD\; stats TESTCLOUD
-vmsave TESTCLOUD vm_3\; stateshow TESTCLOUD\; stats TESTCLOUD
-vmrestore TESTCLOUD vm_3\; stateshow TESTCLOUD\; stats TESTCLOUD
-vmdetach TESTCLOUD vm_4\; vmlist TESTCLOUD\; stats TESTCLOUD
-vmdetach TESTCLOUD vm_5 async\; waitfor TESTCLOUD 10s\; vmlist TESTCLOUD\; stats TESTCLOUD
-vmdetach TESTCLOUD oldest\; vmlist TESTCLOUD\; stats TESTCLOUD
-vmdetach TESTCLOUD youngest\; vmlist TESTCLOUD\; stats TESTCLOUD
-vmdetach TESTCLOUD random\; vmlist TESTCLOUD\; stats TESTCLOUD
-vmdetach TESTCLOUD all\; vmlist TESTCLOUD\; stats TESTCLOUD
-vmattach TESTCLOUD norole\; vmlist TESTCLOUD\; stats TESTCLOUD
-vmattach TESTCLOUD willfail\; vmlist TESTCLOUD\; stats TESTCLOUD
-vmattach TESTCLOUD willfail async\; waituntil TESTCLOUD VM ARRIVING=0 decreasing 1\; vmlist TESTCLOUD\; stats TESTCLOUD
-vmlist TESTCLOUD finished
-vmlist TESTCLOUD failed 
-aiattach TESTCLOUD ibm_daytrader\; ailist TESTCLOUD\; vmlist TESTCLOUD\; aishow TESTCLOUD ai_1 detach_parallelism,ssh_key_name,sut\; stats TESTCLOUD
-ailist TESTCLOUD
-aishow TESTCLOUD ai_1 all
-aialter TESTCLOUD ai_1 mode=scalable\; aishow TESTCLOUD ai_1 mode
-aiattach TESTCLOUD hadoop async\; waitfor TESTCLOUD 12s\; ailist TESTCLOUD\; vmlist TESTCLOUD\; aishow TESTCLOUD ai_2 detach_parallelism,ssh_key_name,sut\; stats TESTCLOUD
-aiattach TESTCLOUD ibm_daytrader detach_parallelism=9,ssh_key_name=AAAABBBBCCCCDDDDEEEE\; ailist TESTCLOUD\; vmlist TESTCLOUD\; aishow TESTCLOUD ai_3 detach_parallelism,ssh_key_name,sut\; stats TESTCLOUD
-airunstate TESTCLOUD ai_3 suspend\; stateshow TESTCLOUD\; stats TESTCLOUD
-airunstate TESTCLOUD ai_3 attached\; stateshow TESTCLOUD\; stats TESTCLOUD
-aifail TESTCLOUD ai_3\; stateshow TESTCLOUD\; stats TESTCLOUD
-airepair TESTCLOUD ai_3\; stateshow TESTCLOUD\; stats TESTCLOUD
-aisave TESTCLOUD ai_3\; stateshow TESTCLOUD\; stats TESTCLOUD
-airestore TESTCLOUD ai_3\; stateshow TESTCLOUD\; stats TESTCLOUD
-aiattach TESTCLOUD ibm_daytrader detach_parallelism=10,ssh_key_name=aaaabbbbccccddddeeee async \; waitfor TESTCLOUD 18s\; ailist TESTCLOUD\; vmlist TESTCLOUD\; aishow TESTCLOUD ai_4 detach_parallelism,ssh_key_name,sut\; stats TESTCLOUD
-aiattach TESTCLOUD netperf netclient_pref_pool=SUT,netclient_size=platinum64\; ailist TESTCLOUD\; vmlist TESTCLOUD\; aishow TESTCLOUD ai_5 detach_parallelism,ssh_key_name,sut\; stats TESTCLOUD
-aiattach TESTCLOUD hadoop hadoopslave_size=platinum64,sut=hadoopmaster->1_x_hadoopslave async\; waitfor TESTCLOUD 18s\; ailist TESTCLOUD\; vmlist TESTCLOUD\; aishow TESTCLOUD ai_6 detach_parallelism,ssh_key_name,sut\; stats TESTCLOUD
-airesize TESTCLOUD ai_1 was +1\; ailist TESTCLOUD\; vmlist TESTCLOUD\; aishow TESTCLOUD ai_1 detach_parallelism,ssh_key_name,sut\; stats TESTCLOUD
-airesize TESTCLOUD ai_1 was -1\; ailist TESTCLOUD\; vmlist TESTCLOUD\; aishow TESTCLOUD ai_1 detach_parallelism,ssh_key_name,sut\; stats TESTCLOUD
-aiattach TESTCLOUD ibm_daytrader\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-vmcapture TESTCLOUD vm_29\; stats TESTCLOUD\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-vmcapture TESTCLOUD youngest\; stats TESTCLOUD\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-vmcapture TESTCLOUD vm_41 async\; waitfor TESTCLOUD 25s\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-vmcapture TESTCLOUD oldest async\; waitfor TESTCLOUD 25s\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-aiattach TESTCLOUD ibm_daytrader load_balancer=true\; ailist TESTCLOUD\; vmlist TESTCLOUD\; aishow TESTCLOUD ai_8 load_balancer,sut\; stats TESTCLOUD
-aiattach TESTCLOUD ibm_daytrader\; ailist TESTCLOUD\; vmlist TESTCLOUD\; aishow TESTCLOUD ai_9 load_balancer,sut\; stats TESTCLOUD
-aiattach TESTCLOUD ibm_daytrader\; ailist TESTCLOUD\; vmlist TESTCLOUD\; aishow TESTCLOUD ai_10 load_balancer,sut\; stats TESTCLOUD
-aiattach TESTCLOUD ibm_daytrader\; ailist TESTCLOUD\; vmlist TESTCLOUD\; aishow TESTCLOUD ai_11 load_balancer,sut\; stats TESTCLOUD
-typeshow TESTCLOUD ibm_daytrader
-typealter TESTCLOUD ibm_daytrader load_balancer=true\; typeshow TESTCLOUD ibm_daytrader
-aiattach TESTCLOUD ibm_daytrader\; ailist TESTCLOUD\; vmlist TESTCLOUD\; aishow TESTCLOUD ai_12 load_balancer,sut\; stats TESTCLOUD
-aiattach TESTCLOUD ibm_daytrader\; ailist TESTCLOUD\; vmlist TESTCLOUD\; aishow TESTCLOUD ai_13 load_balancer,sut\; stats TESTCLOUD
-aiattach TESTCLOUD netperf async=4:2
-waituntil TESTCLOUD AI ARRIVED=17 increasing 2\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-aiattach TESTCLOUD ibm_daytrader\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-aiattach TESTCLOUD ibmderby_tradelite\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-aiattach TESTCLOUD hpcc\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-aiattach TESTCLOUD coremark\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-aiattach TESTCLOUD filebench\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-aidetach TESTCLOUD ai_12\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-aidetach TESTCLOUD ai_13 async\; waituntil TESTCLOUD AI RESERVATIONS=16 decreasing 5\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-aidetach TESTCLOUD oldest\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-aidetach TESTCLOUD youngest\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-aiattach TESTCLOUD ibm_daytrader\; aiattach TESTCLOUD netperf\; aiattach TESTCLOUD hpcc\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-aicapture TESTCLOUD ai_10\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-aicapture TESTCLOUD oldest\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-aicapture TESTCLOUD youngest async\; waituntil TESTCLOUD AI CAPTURING=0\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-aidetach TESTCLOUD random\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-aiattach TESTCLOUD ibm_daytrader default default none none pause_all_vms_booted async\; waitfor TESTCLOUD 15s\; msgpub TESTCLOUD VM staging ai_26;continue;something\; waituntil TESTCLOUD AI ARRIVING=0 decreasing 1\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-shell TESTCLOUD rm -rf /tmp/cb*_was_used_on_execution\; cldalter TESTCLOUD ai_defaults execute_script_name=CB_DIRECTORY/regression/scripts/execute_on_staging.sh\; aiattach TESTCLOUD ibm_daytrader default default none none execute_all_vms_booted\; shell TESTCLOUD ls /tmp/cb*_was_used_on_execution\; waitfor TESTCLOUD 5s\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-aiattach TESTCLOUD hadoop save_on_attach=true\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD\; stateshow TESTCLOUD
-airestore TESTCLOUD ai_28\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD\; stateshow TESTCLOUD
-aiattach TESTCLOUD notype\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-aidetach TESTCLOUD all\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-typealter TESTCLOUD ibm_daytrader sut=client_ibm_daytrader->was->willfail\; aiattach TESTCLOUD ibm_daytrader\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-vmlist TESTCLOUD finished
-vmlist TESTCLOUD failed 
-patternalter TESTCLOUD simplenw iait=10\; patternshow TESTCLOUD simplenw
-aidrsattach TESTCLOUD simplenw lifetime=40\; aidrslist TESTCLOUD\; aidrsshow TESTCLOUD aidrs_1 iait,lifetime,max_ais\; stats TESTCLOUD
-aidrslist TESTCLOUD
-aidrsshow TESTCLOUD aidrs_1 all
-aidrsalter TESTCLOUD aidrs_1 max_ais=20
-waituntil TESTCLOUD AI ARRIVED=30 increasing 5\; aidrslist TESTCLOUD\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-statealter TESTCLOUD aidrs_1 stopped
-waituntil TESTCLOUD AI =0 decreasing 1\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-aidrsdetach TESTCLOUD aidrs_1\; aidrslist TESTCLOUD\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-aidrsattach TESTCLOUD simplenw\; aidrsalter TESTCLOUD aidrs_2 max_ais=5\; aidrsalter TESTCLOUD aidrs_2 iait=6\; aidrsshow TESTCLOUD aidrs_2 all\; aidrslist TESTCLOUD\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-waitfor TESTCLOUD 1m\; aidrsshow TESTCLOUD aidrs_2 all\; aidrslist TESTCLOUD\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-aidrsdetach TESTCLOUD all\; aidetach TESTCLOUD all\; aidrslist TESTCLOUD\; ailist TESTCLOUD\; vmlist TESTCLOUD\; stats TESTCLOUD
-vmcattach TESTCLOUD simzone_source initial_hosts=source\; vmcattach TESTCLOUD simzone_dest initial_hosts=dest
-vmattach TESTCLOUD tinyvm simzone_source\; stats TESTCLOUD\; vmlist TESTCLOUD
-vmmigrate TESTCLOUD youngest dest\; stats TESTCLOUD\; vmlist TESTCLOUD
-vmmigrate TESTCLOUD youngest source async\; waitfor TESTCLOUD 10s\; stats TESTCLOUD\; vmlist TESTCLOUD
-vmprotect TESTCLOUD youngest dest\; stats TESTCLOUD\; vmlist TESTCLOUD
-vmprotect TESTCLOUD youngest source async\; waitfor TESTCLOUD 10s\; stats TESTCLOUD\; vmlist TESTCLOUD
+shell USE_DEFAULT_IF_AVAILABLE:TESTCLOUD date
+cldlist
+roleshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD tinyvm
+typeshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ibm_daytrader
+patternshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simplehd
+viewlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+cldshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD all
+cldalter USE_DEFAULT_IF_AVAILABLE:TESTCLOUD time experiment_id=REGRESSION_A
+expid USE_DEFAULT_IF_AVAILABLE:TESTCLOUD REGRESSION_B
+stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+waitfor USE_DEFAULT_IF_AVAILABLE:TESTCLOUD 10s
+vmcattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simzone_a\; vmclist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmcshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simzone_a\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmccleanup USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simzone_a
+vmcattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simzone_b async\; waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VMC ARRIVING=0 decreasing 1\; vmclist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmcshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simzone_b update_attempts,update_frequency\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmcattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simzone_c update_attempts=78,update_frequency=3\; vmclist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmcshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simzone_c update_attempts,update_frequency\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmcattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simzone_d update_attempts=156,update_frequency=6 async\; waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VMC ARRIVING=0 decreasing 1\; vmclist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmcshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simzone_d update_attempts,update_frequency\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmcdetach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simzone_d\; vmcdetach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simzone_c\; vmcdetach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simzone_b\; vmclist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmcdetach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simzone_a async\; waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VMC ARRIVING=0 decreasing 1\; vmclist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmcattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD all\; vmclist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmcattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD all\; vmclist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmcdetach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simzone_a\; vmclist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmcdetach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD all\; vmclist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmcattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD update_attempts=312,update_frequency=12 all\; vmclist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmcshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simzone_c update_attempts,update_frequency\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmcdetach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD all async\; waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VMC DEPARTING=0 decreasing 1\; vmclist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmcattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD all async\; waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VMC ARRIVING=0 decreasing 1\; vmclist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmcshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simzone_c update_attempts,update_frequency\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmcalter USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simzone_a replication_vmcs=TESTE\; vmcshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simzone_a replication_vmcs
+hostlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+hostshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simhosta3 all
+hostfail USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simhostc2 stonith
+hostrepair USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simhostc2 stonith
+poollist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+viewshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VMC pool sut
+vmattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD tinyvm\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD vm_1 vmc_name,vmc_pool,host_name,meta_tags,size\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD vm_1 all
+vmattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD tinyvm lg\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD vm_2 vmc_name,vmc_pool,host_name,meta_tags,size\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD tinyvm simhostb1\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD vm_3 vmc_name,vmc_pool,host_name,meta_tags,size\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD db2 auto a:b,x:y,r:2\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD vm_4 vmc_name,vmc_pool,host_name,meta_tags,size\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD netclient auto a:b,x:y,r:2 size=platinum64,vmc_pool=SUT\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD vm_5 vmc_name,vmc_pool,host_name,meta_tags,size\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmcapture USE_DEFAULT_IF_AVAILABLE:TESTCLOUD vm_2\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD tinyvm async\; waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VM ARRIVING=0 decreasing 1\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD pending\; waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VM ARRIVING=0 decreasing 1\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD tinyvm async=2\; waitfor USE_DEFAULT_IF_AVAILABLE:TESTCLOUD 1s\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD pending\; waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VM ARRIVED=8 increasing 1\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+rolealter USE_DEFAULT_IF_AVAILABLE:TESTCLOUD db2 size=platinum64
+vmattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD db2 SUT A:B,X:Y,R:2 async\; waitfor USE_DEFAULT_IF_AVAILABLE:TESTCLOUD 1s\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD pending\; waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VM ARRIVING=0 decreasing 1\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD vm_9 role,vmc_name,vmc_pool,host_name,meta_tags,size\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD netclient simhosta2 A:B,X:Y,R:2 async\; waitfor USE_DEFAULT_IF_AVAILABLE:TESTCLOUD 1s\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD pending\; waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VM ARRIVING=0 decreasing 1\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD vm_10 role,vmc_name,vmc_pool,host_name,meta_tags,size\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD fen_hpc auto empty size=platinum64,vmc_pool=LG async\; waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VM ARRIVING=0 decreasing 1\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD vm_11 vmc_name,vmc_pool,host_name,meta_tags,size\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD tinyvm auto empty iron32 pause_provision_complete async\; waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VM PAUSING=1 increasing 1\; waitfor USE_DEFAULT_IF_AVAILABLE:TESTCLOUD 8s\; msgpub USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VM staging vm_12;continue;something\; waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VM ARRIVING=0 decreasing 1\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+shell USE_DEFAULT_IF_AVAILABLE:TESTCLOUD rm -rf /tmp/cb*_was_used_on_execution\; cldalter USE_DEFAULT_IF_AVAILABLE:TESTCLOUD vm_defaults execute_script_name=CB_DIRECTORY/regression/scripts/execute_on_staging.sh\; vmattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD tinyvm auto empty iron32 execute_provision_complete async\; waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VM ARRIVING=0 decreasing 1\; shell USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ls /tmp/cb*_was_used_on_execution\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD predictablevm auto empty check_boot_started=subscribe_on_STARTING async\; waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VM STARTING=1 increasing 1\; waitfor USE_DEFAULT_IF_AVAILABLE:TESTCLOUD 8s\; msgpub USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VM STARTING 11111111-1111-1111-1111-111111111111 has started\; waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VM ARRIVING=0 decreasing 1\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD tinyvm\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD tinyvm\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD tinyvm\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD tinyvm\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD tinyvm\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD tinyvm\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD tinyvm\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD tinyvm\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD finished
+vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD failed 
+stateshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmrunstate USE_DEFAULT_IF_AVAILABLE:TESTCLOUD vm_3 suspend\; stateshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmrunstate USE_DEFAULT_IF_AVAILABLE:TESTCLOUD vm_3 attached\; stateshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmfail USE_DEFAULT_IF_AVAILABLE:TESTCLOUD vm_3\; stateshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmrepair USE_DEFAULT_IF_AVAILABLE:TESTCLOUD vm_3\; stateshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmsave USE_DEFAULT_IF_AVAILABLE:TESTCLOUD vm_3\; stateshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmrestore USE_DEFAULT_IF_AVAILABLE:TESTCLOUD vm_3\; stateshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmdetach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD vm_4\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmdetach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD vm_5 async\; waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VM DEPARTING=0 decreasing 1\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmdetach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD oldest\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmdetach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD youngest\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmdetach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD random\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmdetach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD all\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD norole\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD willfail\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD willfail async\; waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VM ARRIVING=0 decreasing 1\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD finished
+vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD failed 
+aiattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD hadoop\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; aishow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_1 detach_parallelism,ssh_key_name,sut\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aishow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_1 all
+aialter USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_1 mode=scalable\; aishow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_1 mode
+aiattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD hadoop async\; waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD AI ARRIVING=0 decreasing 1\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; aishow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_2 detach_parallelism,ssh_key_name,sut\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aiattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD hadoop detach_parallelism=9,ssh_key_name=AAAABBBBCCCCDDDDEEEE\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; aishow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_3 detach_parallelism,ssh_key_name,sut\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+airunstate USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_3 suspend\; stateshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+airunstate USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_3 attached\; stateshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aifail USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_3\; stateshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+airepair USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_3\; stateshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aisave USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_3\; stateshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+airestore USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_3\; stateshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aiattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD hadoop detach_parallelism=10,ssh_key_name=aaaabbbbccccddddeeee async \; waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD AI ARRIVING=0 decreasing 1\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; aishow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_4 detach_parallelism,ssh_key_name,sut\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aiattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD netperf netclient_pref_pool=SUT,netclient_size=platinum64\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; aishow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_5 detach_parallelism,ssh_key_name,sut\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aiattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD hadoop hadoopslave_size=platinum64,sut=hadoopmaster->1_x_hadoopslave async\; waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD AI ARRIVING=0 decreasing 1\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; aishow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_6 detach_parallelism,ssh_key_name,sut\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+airesize USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_1 hadoopslave +1\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; aishow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_1 detach_parallelism,ssh_key_name,sut\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+airesize USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_1 hadoopslave -1\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; aishow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_1 detach_parallelism,ssh_key_name,sut\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aiattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD hadoop\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmcapture USE_DEFAULT_IF_AVAILABLE:TESTCLOUD vm_29\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmcapture USE_DEFAULT_IF_AVAILABLE:TESTCLOUD youngest\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmcapture USE_DEFAULT_IF_AVAILABLE:TESTCLOUD vm_41 async\; waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VM CAPTURING=0 decreasing 1\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmcapture USE_DEFAULT_IF_AVAILABLE:TESTCLOUD oldest async\; waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VM CAPTURING=0 decreasing 1\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aiattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD hadoop sut=hadoopmaster->3_x_hadoopslave\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; aishow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_8 sut\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aiattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD hadoop\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; aishow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_9 sut\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aiattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD hadoop\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; aishow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_10 sut\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aiattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD hadoop\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; aishow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_11 sut\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+typeshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD hadoop 
+typealter USE_DEFAULT_IF_AVAILABLE:TESTCLOUD hadoop hadoopmaster->3_x_hadoopslave\; typeshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD hadoop
+aiattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD hadoop\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; aishow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_12 sut\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aiattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD hadoop\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; aishow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_13 sut\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aiattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD netperf async=4:2
+waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD AI ARRIVED=17 increasing 2\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aiattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD hadoop\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aiattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD netperf\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aiattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD cassandra_ycsb\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aiattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD nullworkload\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aiattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD nullworkload\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aidetach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_12\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aidetach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_13 async\; waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD AI RESERVATIONS=16 decreasing 5\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aidetach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD oldest\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aidetach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD youngest\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aiattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD hadoop\; aiattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD netperf\; aiattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD cassandra_ycsb\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aicapture USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_10\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aicapture USE_DEFAULT_IF_AVAILABLE:TESTCLOUD oldest\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aicapture USE_DEFAULT_IF_AVAILABLE:TESTCLOUD youngest async\; waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD AI CAPTURING=0\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aidetach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD random\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aiattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD hadoop default default none none pause_all_vms_booted async\; waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VM PAUSING=1 increasing 1\; waitfor USE_DEFAULT_IF_AVAILABLE:TESTCLOUD 15s\; msgpub USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VM staging ai_26;continue;something\; waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD AI ARRIVING=0 decreasing 1\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+shell USE_DEFAULT_IF_AVAILABLE:TESTCLOUD rm -rf /tmp/cb*_was_used_on_execution\; cldalter USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_defaults execute_script_name=CB_DIRECTORY/regression/scripts/execute_on_staging.sh\; aiattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD hadoop default default none none execute_all_vms_booted\; shell USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ls /tmp/cb*_was_used_on_execution\; waitfor USE_DEFAULT_IF_AVAILABLE:TESTCLOUD 5s\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aiattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD hadoop save_on_attach=true\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stateshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+airestore USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ai_28\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stateshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aiattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD notype\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aidetach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD all\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+typealter USE_DEFAULT_IF_AVAILABLE:TESTCLOUD hadoop sut=hadoopmaster->3_x_willfail\; aiattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD hadoop\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD finished
+vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD failed
+patternalter USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simplenw iait=10\; patternshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simplenw
+aidrsattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simplenw lifetime=40\; aidrslist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; aidrsshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD aidrs_1 iait,lifetime,max_ais\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aidrslist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aidrsshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD aidrs_1 all
+aidrsalter USE_DEFAULT_IF_AVAILABLE:TESTCLOUD aidrs_1 max_ais=20
+waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD AI ARRIVED=30 increasing 5\; aidrslist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+statealter USE_DEFAULT_IF_AVAILABLE:TESTCLOUD aidrs_1 stopped
+waituntil USE_DEFAULT_IF_AVAILABLE:TESTCLOUD AI ARRIVING=0 decreasing 1\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aidrsdetach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD aidrs_1\; aidrslist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aidrsattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simplenw\; aidrsalter USE_DEFAULT_IF_AVAILABLE:TESTCLOUD aidrs_2 max_ais=5\; aidrsalter USE_DEFAULT_IF_AVAILABLE:TESTCLOUD aidrs_2 iait=6\; aidrsshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD aidrs_2 all\; aidrslist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+waitfor USE_DEFAULT_IF_AVAILABLE:TESTCLOUD 1m\; aidrsshow USE_DEFAULT_IF_AVAILABLE:TESTCLOUD aidrs_2 all\; aidrslist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+aidrsdetach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD all\; aidetach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD all\; aidrslist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; ailist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmcattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simzone_source initial_hosts=source\; vmcattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD simzone_dest initial_hosts=dest
+vmattach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD tinyvm simzone_source\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmmigrate USE_DEFAULT_IF_AVAILABLE:TESTCLOUD youngest dest\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmmigrate USE_DEFAULT_IF_AVAILABLE:TESTCLOUD youngest source async\; waitfor USE_DEFAULT_IF_AVAILABLE:TESTCLOUD 10s\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmprotect USE_DEFAULT_IF_AVAILABLE:TESTCLOUD youngest dest\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmprotect USE_DEFAULT_IF_AVAILABLE:TESTCLOUD youngest source async\; waitfor USE_DEFAULT_IF_AVAILABLE:TESTCLOUD 10s\; stats USE_DEFAULT_IF_AVAILABLE:TESTCLOUD\; vmlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
 reserved for vmcrs
 reserved for vmcrs
 reserved for vmcrs
@@ -350,21 +350,21 @@ reserved for firs
 reserved for firs
 reserved for firs
 reserved for firs
-monlist TESTCLOUD HOST
-monextract TESTCLOUD HOST management\; shell TESTCLOUD cat CB_DIRECTORY/data/REGRESSION_B/HOST*man*REGRESSION*
-monextract TESTCLOUD HOST os\; shell TESTCLOUD cat CB_DIRECTORY/data/REGRESSION_B/HOST_runtime_os_*REGRESSION*
-monextract TESTCLOUD VM management\; shell TESTCLOUD cat CB_DIRECTORY/data/REGRESSION_B/VM*man*REGRESSION*
-monextract TESTCLOUD VM os\; shell TESTCLOUD cat CB_DIRECTORY/data/REGRESSION_B/VM_runtime_os_*REGRESSION*
-monextract TESTCLOUD VM app\; shell TESTCLOUD cat CB_DIRECTORY/data/REGRESSION_B/VM_runtime_app_*REGRESSION*
-shell TESTCLOUD rm -rf CB_DIRECTORY/data/REGRESSION_B/*\; shell TESTCLOUD find CB_DIRECTORY/data/REGRESSION_B/
-monextract TESTCLOUD all\; shell TESTCLOUD ls -la CB_DIRECTORY/data/REGRESSION_B
+monlist USE_DEFAULT_IF_AVAILABLE:TESTCLOUD HOST
+monextract USE_DEFAULT_IF_AVAILABLE:TESTCLOUD HOST management\; shell USE_DEFAULT_IF_AVAILABLE:TESTCLOUD cat CB_DIRECTORY/data/REGRESSION_B/HOST*man*REGRESSION*
+monextract USE_DEFAULT_IF_AVAILABLE:TESTCLOUD HOST os\; shell USE_DEFAULT_IF_AVAILABLE:TESTCLOUD cat CB_DIRECTORY/data/REGRESSION_B/HOST_runtime_os_*REGRESSION*
+monextract USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VM management\; shell USE_DEFAULT_IF_AVAILABLE:TESTCLOUD cat CB_DIRECTORY/data/REGRESSION_B/VM*man*REGRESSION*
+monextract USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VM os\; shell USE_DEFAULT_IF_AVAILABLE:TESTCLOUD cat CB_DIRECTORY/data/REGRESSION_B/VM_runtime_os_*REGRESSION*
+monextract USE_DEFAULT_IF_AVAILABLE:TESTCLOUD VM app\; shell USE_DEFAULT_IF_AVAILABLE:TESTCLOUD cat CB_DIRECTORY/data/REGRESSION_B/VM_runtime_app_*REGRESSION*
+shell USE_DEFAULT_IF_AVAILABLE:TESTCLOUD rm -rf CB_DIRECTORY/data/REGRESSION_B/*\; shell USE_DEFAULT_IF_AVAILABLE:TESTCLOUD find CB_DIRECTORY/data/REGRESSION_B/
+monextract USE_DEFAULT_IF_AVAILABLE:TESTCLOUD all\; shell USE_DEFAULT_IF_AVAILABLE:TESTCLOUD ls -la CB_DIRECTORY/data/REGRESSION_B
 reserved for monplot
-vmdev TESTCLOUD
-vmundev TESTCLOUD
-appdev TESTCLOUD
-appundev TESTCLOUD
-appnoload TESTCLOUD
-appload TESTCLOUD
-vmcapture TESTCLOUD youngest imgtstabc
-imgdelete TESTCLOUD imgtstabc simzone_a
-clddetach TESTCLOUD
+vmdev USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmundev USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+appdev USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+appundev USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+appnoload USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+appload USE_DEFAULT_IF_AVAILABLE:TESTCLOUD
+vmcapture USE_DEFAULT_IF_AVAILABLE:TESTCLOUD youngest imgtstabc
+imgdelete USE_DEFAULT_IF_AVAILABLE:TESTCLOUD imgtstabc simzone_a
+clddetach USE_DEFAULT_IF_AVAILABLE:TESTCLOUD

@@ -44,6 +44,19 @@ from lib.remote.ssh_ops import repeated_ssh
 from lib.remote.process_management import ProcessManagement
 from lib.stores.stores_initial_setup import syslog_logstore_setup
 
+@trace
+def use_default_if_available(name) :
+    if name.count("USE_DEFAULT_IF_AVAILABLE") :
+        if not name.count(":") :
+            raise self.ObjectOperationException("The option 'USE_DEFAULT_IF_AVAILABLE must contain a backup cloud name in case there is fact no default available, e.g.: 'USE_DEFAULT_IF_AVAILABLE:BACKUP_CLOUD'", 1332)
+
+        new_name = name.split(":")[1]
+        if BaseObjectOperations.default_cloud :
+            new_name = BaseObjectOperations.default_cloud
+        return new_name
+
+    return name
+
 class BaseObjectOperations :
     '''
     TBD
@@ -143,6 +156,16 @@ class BaseObjectOperations :
 
         return parameters
   
+
+    @trace
+    def check_for_alternate_default(self, parameters) :
+        if parameters.strip().count(" ") :
+            override_default = parameters.split()[0]
+            alternate_default = use_default_if_available(override_default)
+            if override_default != alternate_default :
+                parameters = parameters.replace(override_default, alternate_default)
+        return parameters
+
     @trace
     def parse_cli(self, object_attribute_list, parameters, command) :
         '''
@@ -151,6 +174,7 @@ class BaseObjectOperations :
         _status = 0
 
         command = self.cleanup_comments_command(command)
+        parameters = self.check_for_alternate_default(parameters)
 
         if BaseObjectOperations.default_cloud is None :
             if not command.count("cloud-attach") and len(parameters.split()) > 0:
@@ -197,16 +221,16 @@ class BaseObjectOperations :
             if len(_parameters) >= 2 :
                 object_attribute_list["cloud_name"] = _parameters[1]
             if len(_parameters) >= 3 :
-                object_attribute_list["cloud_filename"]  = _parameters[1]
+                object_attribute_list["cloud_filename"]  = _parameters[2]
             if len(_parameters) < 2 :
                 _status = 9
-                _msg = "Usage: cldattach <cloud model> <cloud name> [definitions file] "
+                _msg = "Usage: cldattach <cloud model> <cloud name> [keyword: use_default_if_available|definitions filename] "
             else :
                 object_attribute_list["name"] = object_attribute_list["cloud_name"]
 
         elif command == "cloud-detach" :
             if _length :
-                object_attribute_list["name"] = _parameters[0]
+                object_attribute_list["name"] = use_default_if_available(_parameters[0])
             else :
                 _status = 9
                 _msg = "Usage: clddetach <cloud name>"
@@ -258,7 +282,7 @@ class BaseObjectOperations :
                 object_attribute_list["firs"] = "none"            
             if _length >= 3 :
                 object_attribute_list["name"] = _parameters[1]
-                object_attribute_list["situation"] = _parameters[2]                
+                object_attribute_list["situation"] = _parameters[2]
                 object_attribute_list["firs"] = "none"
             if _length >= 4 :
                 object_attribute_list["firs"] = _parameters[3]
@@ -285,13 +309,12 @@ class BaseObjectOperations :
                 _msg = "Usage: imgdelete <cloud name> <image name> <vmc_name> [force]"
 
         elif command == "vmc-attach" :
-            if _length == 2 :
+            if _length >= 2 :
                 object_attribute_list["name"] = _parameters[1]
                 object_attribute_list["pool"] = "auto"
-            elif _length == 3 :
-                object_attribute_list["name"] = _parameters[1]
+            if _length >= 3 :
                 object_attribute_list["pool"] = _parameters[2]
-            else :
+            if _length < 2 :
                 _status = 9
                 _msg = "Usage: vmcattach <cloud name> <vmc name> [pool] [mode]"
 
@@ -3996,6 +4019,8 @@ class BaseObjectOperations :
             # The parse_cli method is used just to get the cloud name and
             # object name.
             _status, _fmsg = self.parse_cli(_obj_attr_list, _parameters, command)
+
+            _parameters = self.check_for_alternate_default(_parameters)
 
             if BaseObjectOperations.default_cloud is not None and \
             _parameters.split()[0] != BaseObjectOperations.default_cloud :

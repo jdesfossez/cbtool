@@ -16,6 +16,7 @@
     @author: Michael R. Hines, Darrin Eden
 '''
 from lib.auxiliary.code_instrumentation import trace, cbdebug, cberr, cbwarn, cbinfo, cbcrit
+
 from libcloud_common import LibcloudCmds
 
 class DoCmds(LibcloudCmds) :
@@ -33,9 +34,26 @@ class DoCmds(LibcloudCmds) :
     # All clouds based on libcloud should define this function.
     # It performs the initial libcloud setup.
     @trace
+    def pre_vmcreate(self, obj_attr_list, extra) :
+        _vmc_defaults = self.osci.get_object(obj_attr_list["cloud_name"], "GLOBAL", False, "vmc_defaults", False)
+        if len(obj_attr_list["vmc_name"]) > 4 and "server_ids" in _vmc_defaults :
+            for entry in _vmc_defaults["server_ids"].split(",") :
+                name, server_id = entry.split(":")
+                if name == obj_attr_list["vmc_name"] :
+                    extra["server"] = int(server_id)
+                    break
+            obj_attr_list["region"] = obj_attr_list["vmc_name"][:4]
+
+        if "management_networking" in obj_attr_list and obj_attr_list["management_networking"].lower() == "true" :
+            cbdebug("Will activate the management network.", True)
+            extra["management_networking"] = True
+        return extra
+
+    @trace
     def get_libcloud_driver(self, libcloud_driver, tenant, access_token) :
         driver = libcloud_driver(access_token, api_version = 'v2')
-
+        driver.EX_CREATE_ATTRIBUTES.append("server")
+        driver.EX_CREATE_ATTRIBUTES.append("management_networking")
         return driver
     
     @trace

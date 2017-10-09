@@ -110,9 +110,12 @@ def main() :
 
     # Handle the new multi-cloud configuration system
     if "startup_cloud" in _cmd_processor.cld_attr_lst["user-defined"] :
+        startup_cloud = _cmd_processor.cld_attr_lst["user-defined"]["startup_cloud"].lower()
+
+        _cmd_processor.do_cldlist("", print_message = False, startup_cloud = startup_cloud)
         available_clouds = get_available_clouds(_cmd_processor.cld_attr_lst, return_all_options = True)
         for cloud in available_clouds :
-            if _cmd_processor.cld_attr_lst["user-defined"]["startup_cloud"].lower() == cloud :
+            if startup_cloud == cloud :
                 for _command in available_clouds[cloud] :
                     _command = _command.replace("__COMMA__",',').strip()
                     print "\n ############################# Executing command \"" + _command + "\" (specified on the configuration file) \n"
