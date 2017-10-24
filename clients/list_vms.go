@@ -23,7 +23,7 @@ package main
 
 import (
     "fmt"
-    "github.internal.digitalocean.com/digitalocean/cbtool/lib/api"
+    "github.com/ibmcb/cbtool/lib/api"
 )
 
 func main() {
