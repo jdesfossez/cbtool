@@ -353,7 +353,7 @@ class LibcloudCmds(CommonCloudFunctions) :
                     _reservations = LibcloudCmds.catalogs.cbtool[credentials_list].list_nodes()
 
                     for _reservation in _reservations :
-                        if _reservation.name.count("cb-" + obj_attr_list["username"]) :
+                        if _reservation.name.count("cb-" + obj_attr_list["username"] + "-" + obj_attr_list["cloud_name"]) :
                             if _reservation.state == NodeState.PENDING :
                                 cbdebug("Instance still has a pending event. waiting to destroy...")
                                 sleep(10)
@@ -386,7 +386,7 @@ class LibcloudCmds(CommonCloudFunctions) :
     
                         _volumes = LibcloudCmds.catalogs.cbtool[credentials_list].list_volumes()
                         for _volume in _volumes :
-                            if _volume.name.count("cb-" + obj_attr_list["username"]) :
+                            if _volume.name.count("cb-" + obj_attr_list["username"] + "-" + obj_attr_list["cloud_name"].lower()) :
                                 try :
                                     cbdebug("Destroying: " + _volume.name + " (" + tenant + ")", True)
                                     _volume.destroy()
