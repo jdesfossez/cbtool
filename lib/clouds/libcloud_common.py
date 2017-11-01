@@ -753,6 +753,7 @@ class LibcloudCmds(CommonCloudFunctions) :
 
             if self.use_volumes and "cloud_vv" in obj_attr_list and str(obj_attr_list["cloud_vv"]).lower() != "false" :
 
+                obj_attr_list["region"] = _region = obj_attr_list["vmc_name"]
                 obj_attr_list["cloud_vv_name"] = obj_attr_list["cloud_vv_name"].lower()
                 
                 obj_attr_list["last_known_state"] = "about to send volume create request"
@@ -764,8 +765,8 @@ class LibcloudCmds(CommonCloudFunctions) :
                     _mark1 = int(time())
     
                     _volume = connection.create_volume(int(obj_attr_list["cloud_vv"]),
-                                                                                  obj_attr_list["cloud_vv_name"],
-                                                                                  location = [x for x in LibcloudCmds.locations if x.id == obj_attr_list["region"]][0])
+                                                      obj_attr_list["cloud_vv_name"],
+                                                      location = [x for x in LibcloudCmds.locations if x.id == obj_attr_list["region"]][0])
     
                     sleep(int(obj_attr_list["update_frequency"]))
     
