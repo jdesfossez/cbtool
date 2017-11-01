@@ -754,7 +754,7 @@ class LibcloudCmds(CommonCloudFunctions) :
             if self.use_volumes and "cloud_vv" in obj_attr_list and str(obj_attr_list["cloud_vv"]).lower() != "false" :
 
                 obj_attr_list["region"] = _region = obj_attr_list["vmc_name"]
-                obj_attr_list["cloud_vv_name"] = obj_attr_list["cloud_vv_name"].lower()
+                obj_attr_list["cloud_vv_name"] = obj_attr_list["cloud_vv_name"].lower().replace("_", "-")
                 
                 obj_attr_list["last_known_state"] = "about to send volume create request"
 
@@ -777,7 +777,6 @@ class LibcloudCmds(CommonCloudFunctions) :
                     obj_attr_list["do_015_create_volume_time"] = _mark2 - _mark1
 
                 else :
-                        
                     obj_attr_list["cloud_vv_uuid"] = "NOT SUPPORTED"
 
             _status = 0
