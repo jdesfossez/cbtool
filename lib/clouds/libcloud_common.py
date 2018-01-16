@@ -178,13 +178,14 @@ class LibcloudCmds(CommonCloudFunctions) :
 
             cbdebug("Caching " + self.get_description() + " locations. If stale, then restart...")
 
+            if obj_attr_list and "name" in obj_attr_list :
+                _hostname = obj_attr_list["name"]                    
+
             if self.use_locations :
                 if not LibcloudCmds.locations :
                     cbdebug("Caching " + self.get_description()  + " Locations...", True)
                     LibcloudCmds.locations = LibcloudCmds.catalogs.cbtool[credentials_list].list_locations()
 
-                    if obj_attr_list and "name" in obj_attr_list :
-                        _hostname = obj_attr_list["name"]                    
                     
                 assert(LibcloudCmds.locations)
 
@@ -436,7 +437,7 @@ class LibcloudCmds(CommonCloudFunctions) :
                 _x, _y, _z, _hostname = self.connect(credentials_list, obj_attr_list)
             
             obj_attr_list["cloud_hostname"] = _hostname
-            obj_attr_list["cloud_ip"] = gethostbyname(self.tldomain)
+            obj_attr_list["cloud_ip"] = _hostname + gethostbyname(self.tldomain)
             obj_attr_list["arrival"] = int(time())
 
             if str(obj_attr_list["discover_hosts"]).lower() == "true" :
@@ -629,7 +630,7 @@ class LibcloudCmds(CommonCloudFunctions) :
                 _candidate_images = LibcloudCmds.catalogs.cbtool[obj_attr_list["credentials_list"]].get_image(obj_attr_list["imageid1"])
             else :
                 for _image in LibcloudCmds.catalogs.cbtool[obj_attr_list["credentials_list"]].list_images() :
-                    if _image.name == obj_attr_list["imageid1"] :
+                    if _image.name == obj_attr_list["imageid1"] or _image.id == obj_attr_list["imageid1"] :
                         _candidate_images = _image
                         break
 
@@ -1230,9 +1231,9 @@ class LibcloudCmds(CommonCloudFunctions) :
             _time_mark_rrs = int(time())
             _instance = False
             while True :
-                _errmsg = "get_vm_instance"
+                _errmsg = "get_instances"
                 cbdebug("Getting instance...")
-                _instance = self.get_vm_instance(obj_attr_list)
+                _instance = self.get_instances(obj_attr_list)
 
                 _curr_tries += 1
                 _msg = "Inside runstate: " + _errmsg
