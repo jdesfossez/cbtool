@@ -234,14 +234,14 @@ class LibcloudCmds(CommonCloudFunctions) :
             _status = 100
             _fmsg = "An error has occurred, but no error message was captured"
 
+            _key_pair_found = False
             for credentials_list in credentials.split(","):
                 _status, _msg, _local_conn, _hostname = self.connect(credentials_list, vmc_defaults)
+                _key_pair_found = self.check_ssh_key(vmc_name, self.determine_key_name(vm_defaults), vm_defaults, False, _local_conn)
 
             self.generate_rc(cloud_name, vmc_defaults, self.additional_rc_contents)
 
             _prov_netname_found, _run_netname_found = self.check_networks(vmc_name, vm_defaults)
-            
-            _key_pair_found = self.check_ssh_key(vmc_name, self.determine_key_name(vm_defaults), vm_defaults, False, _local_conn)
             
             _detected_imageids = self.check_images(vmc_name, vm_templates, _local_conn)
 
