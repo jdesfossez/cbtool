@@ -1229,26 +1229,9 @@ class PassiveObjectOperations(BaseObjectOperations) :
                     _status = 1972
 
                 else :
-                    
+                    self.osci.reset_counters(obj_attr_list["cloud_name"], {}, False, counter_list = obj_attr_list["object_list"].upper())
+                    _x, _y, _stats = self.stats(obj_attr_list, obj_attr_list["cloud_name"] + " all noprint false", "stats-get", True)
                     _status = 0
-                    
-                    for _obj in obj_attr_list["object_list"].split(',') :
-                        _obj = _obj.upper()
-                        
-                        _obj_count = int(_exp_counters[_obj]["reservations"]) 
-                        _obj_count += int(_exp_counters[_obj]["arriving"]) 
-
-                       # This isn't working. If the user wants to shoot themselves in the
-                       # foot, we should let them.
-                        if False and _obj_count :
-                            _fmsg = "Unable to reset counters. At least one " + _obj
-                            _fmsg += " is present on the experiment."
-                            _status = 1972
-                    
-                    if not _status :
-                        self.osci.reset_counters(obj_attr_list["cloud_name"], {}, False, counter_list = obj_attr_list["object_list"].upper())
-                        _x, _y, _stats = self.stats(obj_attr_list, obj_attr_list["cloud_name"] + " all noprint false", "stats-get", True)                        
-                        _status = 0
 
         except self.ObjectOperationException, obj :
             _status = 8

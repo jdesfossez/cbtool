@@ -297,8 +297,8 @@ class RedisMgdConn :
                 self.redis_conn.set(obj_inst + ":GLOBAL:experiment_counter", "0")
             
             if not counter_list :
-                _object_list = cloud_kv_list["query"]["object_type_list"].split(',')
-                _query_list = cloud_kv_list["query"]
+                _object_list = cloud_kv_list["query"]["object_type_list"].upper().split(',')
+                _query_list = _object_list
             else :
                 _object_list = counter_list.split(',')
                 _query_list = _object_list
