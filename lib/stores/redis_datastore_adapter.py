@@ -304,7 +304,7 @@ class RedisMgdConn :
                 _query_list = _object_list
                 
             for _object_type in _object_list :
-                if _object_type.lower() in _query_list :
+                if _object_type in _query_list :
                     _counters = ["COUNTER", "ARRIVED", "DEPARTED", "FAILED", "RESERVATIONS"]
                     for _counter in _counters :
                         _obj_count_fn = obj_inst + ':' + _object_type + ':' + _counter

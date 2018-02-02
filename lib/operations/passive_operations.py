@@ -1239,7 +1239,7 @@ class PassiveObjectOperations(BaseObjectOperations) :
                             _status = 1972
                     
                     if not _status :
-                        self.osci.reset_counters(obj_attr_list["cloud_name"], {}, False, counter_list = obj_attr_list["object_list"])
+                        self.osci.reset_counters(obj_attr_list["cloud_name"], {}, False, counter_list = obj_attr_list["object_list"].upper())
                         _x, _y, _stats = self.stats(obj_attr_list, obj_attr_list["cloud_name"] + " all noprint false", "stats-get", True)                        
                         _status = 0
 
