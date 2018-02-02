@@ -19,9 +19,6 @@ from lib.auxiliary.code_instrumentation import trace, cbdebug, cberr, cbwarn, cb
 
 from libcloud_common import LibcloudCmds
 
-from libcloud.common.digitalocean import DigitalOcean_v2_Connection
-DigitalOcean_v2_Connection.host = "stage-api.s2r1.internal.digitalocean.com"
-
 class DoCmds(LibcloudCmds) :
     @trace
     def __init__ (self, pid, osci, expid = None) :
@@ -30,7 +27,7 @@ class DoCmds(LibcloudCmds) :
                               num_credentials = 1, \
                               use_ssh_keys = True, \
                               use_cloud_init = True, \
-                              #use_volumes = True, \
+                              use_volumes = True, \
                               tldomain = "digitalocean.com", \
                               extra = {"private_networking" : True} \
                              )
