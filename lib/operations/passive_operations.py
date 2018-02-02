@@ -35,6 +35,7 @@ import json
 import shutil
 import textwrap
 import threading
+import traceback
 from hashlib import sha1
 from base64 import b64encode
 
@@ -1213,7 +1214,12 @@ class PassiveObjectOperations(BaseObjectOperations) :
 
                 _exp_counters = _stats["experiment_counters"]
                 
-                _aidrs = int(_exp_counters["AIDRS"]["reservations"]) 
+               cbdebug("AIDRS: " + str(_exp_counters["AIDRS"]["reservations"]), True)
+               _aidrs = 0
+
+                # Not sure what's going on here in simcloud. Needed a dirty fix.
+               if str(_exp_counters["AIDRS"]["reservations"]) != "None" :
+                   _aidrs += int(_exp_counters["AIDRS"]["reservations"])
                 # Arrived doesn't mean that a submitter is present.
                 #_aidrs += int(_exp_counters["AIDRS"]["arrived"])
                 _aidrs += int(_exp_counters["AIDRS"]["arriving"]) 
@@ -1233,7 +1239,9 @@ class PassiveObjectOperations(BaseObjectOperations) :
                         _obj_count = int(_exp_counters[_obj]["reservations"]) 
                         _obj_count += int(_exp_counters[_obj]["arriving"]) 
 
-                        if _obj_count :
+                       # This isn't working. If the user wants to shoot themselves in the
+                       # foot, we should let them.
+                        if False and _obj_count :
                             _fmsg = "Unable to reset counters. At least one " + _obj
                             _fmsg += " is present on the experiment."
                             _status = 1972
@@ -1252,6 +1260,8 @@ class PassiveObjectOperations(BaseObjectOperations) :
             _fmsg = str(obj.msg)
 
         except Exception, e :
+            for line in traceback.format_exc().splitlines() :
+                cbwarn(line, True)
             _status = 23
             _fmsg = str(e)
 
