@@ -987,6 +987,8 @@ class LibcloudCmds(CommonCloudFunctions) :
                 _status = 100
 
         except CldOpsException, obj :
+            for line in traceback.format_exc().splitlines() :
+                cbwarn(line, True)
             _status = obj.status
             _fmsg = str(obj.msg)
             cbwarn("Error during reservation creation: " + _fmsg)
