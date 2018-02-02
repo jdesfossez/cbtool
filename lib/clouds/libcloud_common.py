@@ -932,6 +932,9 @@ class LibcloudCmds(CommonCloudFunctions) :
             else :
                 _size = False
 
+            cbdebug("Size: " + str(_size))
+            cbdebug("Location: " + str(_location))
+
             kwargs = deepcopy(extra["kwargs"])
             del extra["kwargs"]
 
