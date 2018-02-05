@@ -1938,8 +1938,6 @@ class PassiveObjectOperations(BaseObjectOperations) :
                     _msg += " cache for all " + _obj_type.upper() + " objects."
                     cbdebug(_msg)
                 
-                    _uuid_to_attr_dict = {}
-                    
                     _desired_keys = _csv_contents_header.split(',')
 
                     # We use the "trace" collection to determine the actual start
@@ -1964,9 +1962,9 @@ class PassiveObjectOperations(BaseObjectOperations) :
                     # to the current "experiment id". This needs to be optimized 
                     # later.
                     
-                    _collection_name = "management_" + _obj_type.upper() + '_' + _obj_attr_list["username"]
+                    _mgmt_collection_name = "management_" + _obj_type.upper() + '_' + _obj_attr_list["username"]
 
-                    _management_metrics_list = self.msci.find_document(_collection_name, {}, True)
+                    _management_metrics_list = self.msci.find_document(_mgmt_collection_name, {'expid' : _criteria['expid']}, True)
                     
                     for _metric in _management_metrics_list :
                         _csv_contents_line = ''
@@ -1990,10 +1988,6 @@ class PassiveObjectOperations(BaseObjectOperations) :
                                     else:
                                         _csv_contents_line += _obj_attr_list["filler_string"] + ','
 
-                            # The uuid to attribute cache/map has to be unconditionally
-                            # populated.
-                            _uuid_to_attr_dict[_metric["_id"]] = _metric
-        
                         if _metric_type == "management" :
                             _csv_contents_line = _csv_contents_line[:-1] + '\n'
                             _fd.write(_csv_contents_line)
@@ -2024,7 +2018,7 @@ class PassiveObjectOperations(BaseObjectOperations) :
                                                               _criteria, \
                                                               True, \
                                                               [("command_originated", 1)])
-    
+
                         for _trace_item in _trace_list :
                             _trace_csv_contents_header = ''
                             for _key in _trace_desired_keys  :
@@ -2081,16 +2075,18 @@ class PassiveObjectOperations(BaseObjectOperations) :
                                 elif _key == "time" or _key == "time_cbtool" :
                                     _val = str(int(_metric[_key]) - _experiment_start_time)
     
-                                elif _metric["uuid"] in _uuid_to_attr_dict and _key in _uuid_to_attr_dict[_metric["uuid"]] :
-                                    _val = str(_uuid_to_attr_dict[_metric["uuid"]][_key])
-    
-                                else :
-                                    if _key in _last_unchanged_metric[_current_uuid] :
-                                        # Every time a metric is not found, we just
-                                        # replay it from the in-memory cache (dictionary)
-                                        _val = str(_last_unchanged_metric[_current_uuid][_key]) + ' ' + _obj_attr_list["unchanged_string"]
+                               else :
+                                   _tmp_metric = self.msci.find_document(_mgmt_collection_name, {"_id" : _metric["uuid"]})
+                                    if _tmp_metric and _key in _tmp_metric :
+                                        _fallthrough = True
+                                        _val = str(_tmp_metric[_key])
                                     else :
-                                        _val = _obj_attr_list["filler_string"]
+                                        if _key in _last_unchanged_metric[_current_uuid] :
+                                            # Every time a metric is not found, we just
+                                            # replay it from the in-memory cache (dictionary)
+                                            _val = str(_last_unchanged_metric[_current_uuid][_key]) + ' ' + _obj_attr_list["unchanged_string"]
+                                        else :
+                                            _val = _obj_attr_list["filler_string"]
                                 _csv_contents_line += _val + ','
                                 
                             _fd.write(_csv_contents_line[:-1] + '\n')
