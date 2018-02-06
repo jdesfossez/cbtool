@@ -179,7 +179,7 @@ class LibcloudCmds(CommonCloudFunctions) :
             cbdebug("Caching " + self.get_description() + " locations. If stale, then restart...")
 
             if obj_attr_list and "name" in obj_attr_list :
-                _hostname = obj_attr_list["name"]                    
+                _hostname = obj_attr_list["name"]
 
             if self.use_locations :
                 if not LibcloudCmds.locations :
@@ -437,7 +437,16 @@ class LibcloudCmds(CommonCloudFunctions) :
                 _x, _y, _z, _hostname = self.connect(credentials_list, obj_attr_list)
             
             obj_attr_list["cloud_hostname"] = _hostname
-            obj_attr_list["cloud_ip"] = _hostname + gethostbyname(self.tldomain)
+
+            # Public clouds don't really have "hostnames" - they have a single endpoint for all
+            # regions and VMCs. However, in Redis this IP gets tagged
+            # and must be unique, so we have to prefix this so it will be unique.
+            # That makes this "cloud_ip" not a real IP, but unless we stop tagging it,
+            # it still has to be unique to every VMC. 
+            # I'm not totally sure what this means for an Openstack + Libcloud adapter,
+            # but we'll cross that bridge when we get to it.
+            
+            obj_attr_list["cloud_ip"] = _hostname + "." + gethostbyname(self.tldomain)
             obj_attr_list["arrival"] = int(time())
 
             if str(obj_attr_list["discover_hosts"]).lower() == "true" :
