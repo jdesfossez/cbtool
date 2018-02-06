@@ -1266,12 +1266,12 @@ class ActiveObjectOperations(BaseObjectOperations) :
                             _visited = []
 
                         while len(_visited) :
-                           assert(_visited[0] in _vmc_uuid_list)
-                           for idx in range(0, len(_vmc_uuid_list)) :
-                               if _visited[0] == _vmc_uuid_list[idx] :
-                                   del _vmc_uuid_list[idx]
-                                   del _visited[0]
-                                   break
+                            assert(_visited[0] in _vmc_uuid_list)
+                            for idx in range(0, len(_vmc_uuid_list)) :
+                                if _visited[0] == _vmc_uuid_list[idx] :
+                                    del _vmc_uuid_list[idx]
+                                    del _visited[0]
+                                    break
 
                         cbdebug("After Visited: " + str(len(_visited)) + " total: " + str(len(_vmc_uuid_list)))
 
@@ -1288,7 +1288,7 @@ class ActiveObjectOperations(BaseObjectOperations) :
 
                 else :
                     self.osci.remove_from_list(_cn, "GLOBAL", "vmc_pools", obj_attr_list["vmc_pool"])
-                    _fmsg = "An empty VMC pool \"" + obj_attr_list["vmc_pool"] + "\" was selected. This pool was already "
+                    _fmsg = "An empty VMC pool was selected. This pool was already "
                     _fmsg += "removed from the list of pools."
                     cbdebug(_fmsg)
                     _status = 1819
