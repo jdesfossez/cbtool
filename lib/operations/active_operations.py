@@ -75,15 +75,9 @@ class ActiveObjectOperations(BaseObjectOperations) :
             else :
                 _attached_cloud_list = []
 
-            if cld_attr_lst["cloud_filename"] and cld_attr_lst["cloud_filename"] == 'use_default_if_available' :
-                cld_attr_lst["cloud_filename"] = False
-
-                if BaseObjectOperations.default_cloud is not None :
-                    cld_attr_lst["cloud_name"] = BaseObjectOperations.default_cloud
-                    cld_attr_lst["name"] = cld_attr_lst["cloud_name"]
-                         
             if cld_attr_lst["cloud_name"] in _attached_cloud_list :
                 cld_attr_lst = self.get_cloud_parameters(cld_attr_lst["cloud_name"])
+                
                 _idmsg = "\nThe " + cld_attr_lst["model"].upper() + " cloud named \""
                 _idmsg += cld_attr_lst["name"] + "\""
                 _smsg = _idmsg + " was already attached to this experiment."
@@ -123,13 +117,6 @@ class ActiveObjectOperations(BaseObjectOperations) :
                 # Make a pass through config.py to verify that any available
                 # CONFIGOPTION keywords are properly installed
                 available_clouds = get_available_clouds(cld_attr_lst, return_all_options = True)
-
-                # If we're using 'use_default_if_available', the model will be wrong, and we need to correct it
-                if cld_attr_lst["name"].lower() in available_clouds :
-                    tmp_model = available_clouds[cld_attr_lst["name"].lower()][0].split()[1]
-                    if cld_attr_lst["model"] != tmp_model :
-                        cbdebug("Updating model from " + cld_attr_lst["model"] + " to " + tmp_model)
-                        cld_attr_lst["model"] = tmp_model
 
                 rewrite_cloudoptions(cld_attr_lst, available_clouds, True)
 
@@ -1291,7 +1278,7 @@ class ActiveObjectOperations(BaseObjectOperations) :
                     assert(len(_vmc_uuid_list))
                     obj_attr_list["vmc"] = choice(_vmc_uuid_list).split('|')[0]
 
-                    self.osci.update_object_attribute(_cn, "VMC", obj_attr_list["vmc"], False, "visited", True) 
+                    self.osci.update_object_attribute(_cn, "VMC", obj_attr_list["vmc"], False, "visited", True)
                     
                     if not obj_attr_list["vmc"] :
                         _fmsg = "No VMCs on pool \"" +  obj_attr_list["vmc_pool"] + "\""

@@ -38,7 +38,6 @@ from subprocess import Popen, PIPE
 from optparse import OptionParser
 from re import sub, compile
 from time import time
-from traceback import extract_stack
 
 from logging import getLogger, StreamHandler, Formatter, Filter, DEBUG, ERROR, INFO
 from logging.handlers import logging, SysLogHandler, RotatingFileHandler
@@ -48,7 +47,7 @@ from lib.auxiliary.data_ops import message_beautifier, dic2str, is_valid_temp_at
 from lib.remote.process_management import ProcessManagement
 from lib.operations.active_operations import ActiveObjectOperations
 from lib.operations.passive_operations import PassiveObjectOperations
-from lib.operations.base_operations import BaseObjectOperations, use_default_if_available
+from lib.operations.base_operations import BaseObjectOperations
 from lib.auxiliary.code_instrumentation import trace, cbdebug, cberr, cbwarn, cbinfo, cbcrit
 from lib.stores.mongodb_datastore_adapter import MongodbMgdConn
 from lib.stores.redis_datastore_adapter import RedisMgdConn
@@ -335,7 +334,7 @@ class CBCLI(Cmd) :
             '''
             if BaseObjectOperations.default_cloud :
                 if len(parameters) > 0 :
-                        _possible_cloud_name = use_default_if_available(parameters[0])
+                        _possible_cloud_name = parameters[0]
                         if _possible_cloud_name == BaseObjectOperations.default_cloud :
                             True
                         elif _possible_cloud_name in self.attached_clouds :
@@ -358,9 +357,7 @@ class CBCLI(Cmd) :
             the actual function.
             '''
             if num_parms < required :
-                for line in extract_stack() : 
-                    cberr(">>>> " + str(line))
-                print self.usage[name] + " (provided " + str(num_parms) + " parameters: " + str(parameters) + ", needed: " + str(required) + ")"
+                print self.usage[name]
                 return
 
             if num_parms > len(self.signatures[name]["args"]) :
@@ -960,14 +957,16 @@ class CBCLI(Cmd) :
                 Cmd.prompt = '(' +  str(BaseObjectOperations.default_cloud) + walkthrough + ") "
 
     @trace
-    def do_cldlist(self, parameters, print_message = True, startup_cloud = False) :
+    def do_cldlist(self, parameters, print_message = True) :
         '''
         TBD
         '''
         self.passive_operations = PassiveObjectOperations(self.osci, self.msci, [])
+
         _status, _msg, _object = self.passive_operations.list_objects(self.cld_attr_lst, \
                                                                       parameters, \
                                                                       "cloud-list")
+                        
         if len(_object["result"]) == 1 :
             _w = ''
             if "walkthrough" in _object["result"][0] :
@@ -977,14 +976,8 @@ class CBCLI(Cmd) :
             self.do_clddefault(_object["result"][0]["name"] + _w)
 
         for _cloud_name_index in range(0, len(_object["result"])) :
-            cname = _object["result"][_cloud_name_index]["name"]
-            if cname not in self.attached_clouds :
-                self.attached_clouds.append(cname)
-
-            # If we have more than one cloud already attached,
-            # we should still respect the STARTUP_CLOUD option in the configuration file
-            if len(_object["result"]) > 1 and startup_cloud and cname.lower() == startup_cloud.lower() :
-                self.do_clddefault(cname)
+            if _object["result"][_cloud_name_index]["name"] not in self.attached_clouds :
+                self.attached_clouds.append(_object["result"][_cloud_name_index]["name"])
 
         self.passive_operations = PassiveObjectOperations(self.osci, \
                                                           self.msci, \
