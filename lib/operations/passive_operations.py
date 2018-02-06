@@ -2075,8 +2075,8 @@ class PassiveObjectOperations(BaseObjectOperations) :
                                 elif _key == "time" or _key == "time_cbtool" :
                                     _val = str(int(_metric[_key]) - _experiment_start_time)
     
-                               else :
-                                   _tmp_metric = self.msci.find_document(_mgmt_collection_name, {"_id" : _metric["uuid"]})
+                                else :
+                                    _tmp_metric = self.msci.find_document(_mgmt_collection_name, {"_id" : _metric["uuid"]})
                                     if _tmp_metric and _key in _tmp_metric :
                                         _fallthrough = True
                                         _val = str(_tmp_metric[_key])
