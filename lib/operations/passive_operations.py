@@ -2037,15 +2037,14 @@ class PassiveObjectOperations(BaseObjectOperations) :
                         _last_unchanged_metric = {}
 
                         _collection_name = _metric_type + '_' + _obj_type.upper() + '_' + _obj_attr_list["username"]
-                        _runtime_metric_list = self.msci.find_document(_collection_name, \
-                                                                       _criteria, \
-                                                                       True, \
-                                                                       [("time", 1)])
+                        filters = []
+                        if _metric_type != "runtime_os" :
+                           filters.append(("time", 1))
+                        _runtime_metric_list = self.msci.find_document(_collection_name, _criteria, True, filters)
 
                         _empty = True
 
                         for _metric in _runtime_metric_list :
-
                             _empty = False
                             _current_uuid = _metric["uuid"]
                             _csv_contents_line = ''
@@ -2062,6 +2061,7 @@ class PassiveObjectOperations(BaseObjectOperations) :
                                 # value when a metric is not found on the Metric Store.
                                 _last_unchanged_metric[_current_uuid] = {}
     
+                            _tmp_metric = self.msci.find_document(_mgmt_collection_name, {"_id" : _metric["uuid"]})
                             for _key in _desired_keys :
                                 if _key in _metric and _key != "uuid" and _key != "time" and _key != "time_h" and _key != "time_cbtool" and _key != "time_cbtool_h" :
                                     _val = str(_metric[_key]["val"])
@@ -2076,9 +2076,7 @@ class PassiveObjectOperations(BaseObjectOperations) :
                                     _val = str(int(_metric[_key]) - _experiment_start_time)
     
                                 else :
-                                    _tmp_metric = self.msci.find_document(_mgmt_collection_name, {"_id" : _metric["uuid"]})
                                     if _tmp_metric and _key in _tmp_metric :
-                                        _fallthrough = True
                                         _val = str(_tmp_metric[_key])
                                     else :
                                         if _key in _last_unchanged_metric[_current_uuid] :
