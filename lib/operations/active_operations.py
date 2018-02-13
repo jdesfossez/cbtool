@@ -2237,7 +2237,8 @@ class ActiveObjectOperations(BaseObjectOperations) :
         _proc_man = ProcessManagement(username = obj_attr_list["login"], \
                                       cloud_name = obj_attr_list["cloud_name"], \
                                       priv_key = obj_attr_list["identity"], \
-                                      config_file = _config_file)
+                                      config_file = _config_file,
+                                      connection_timeout = 120)
 
         try :
             
