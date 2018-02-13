@@ -109,18 +109,20 @@ class ProcessManagement :
 
             if self.connection_timeout :
                 _connection_timeout = " -o ConnectTimeout=" + str(self.connection_timeout) + ' '
+                _established_timeout = " -o ServerAliveInterval=" + str(self.connection_timeout) + ' '
             else :
                 _connection_timeout = ''
+                _established_timeout = ''
 
             _cmd = "ssh "
             _cmd += " -p " + str(_port) + ' ' 
             _cmd += _priv_key 
             _cmd += _config_file 
             _cmd += _connection_timeout            
+            _cmd += _established_timeout
             _cmd += " -o StrictHostKeyChecking=no"
             _cmd += " -o UserKnownHostsFile=/dev/null "
             _cmd += " -o BatchMode=yes " 
-            _cmd += " -o ServerAliveInterval=60 "
             _cmd += _username
             
             self.rsync_conn = _cmd
