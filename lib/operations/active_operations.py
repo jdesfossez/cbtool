@@ -2389,14 +2389,16 @@ class ActiveObjectOperations(BaseObjectOperations) :
 
                 _cmd = "~/" + obj_attr_list["remote_dir_name"] + "/scripts/common/cb_post_boot.sh"
                 
-                _status, _xfmsg, _object = \
-                _proc_man.run_os_command(_cmd, obj_attr_list["prov_cloud_ip"], \
-                                         obj_attr_list["run_generic_scripts"], \
-                                         obj_attr_list["debug_remote_commands"], \
-                                         True, \
-                                         tell_me_if_stderr_contains = "Connection reset by peer", \
-                                         port = obj_attr_list["prov_cloud_port"])                    
-
+                _status, _result_stdout, _result_stderr = \
+                        _proc_man.retriable_run_os_command(_cmd, obj_attr_list["prov_cloud_ip"], \
+                                                           really_execute = obj_attr_list["run_generic_scripts"], \
+                                                           debug_cmd = obj_attr_list["debug_remote_commands"], \
+                                                           total_attempts = int(obj_attr_list["update_attempts"]),\
+                                                           retry_interval = int(obj_attr_list["update_frequency"]), \
+                                                           raise_exception_on_error = True, \
+                                                           tell_me_if_stderr_contains = "Connection reset by peer", \
+                                                           port = obj_attr_list["prov_cloud_port"]
+                                                           )
                 _time_mark_ipbc = int(time())
                 _delay = _time_mark_ipbc - obj_attr_list["time_mark_aux"]
                              
@@ -2404,7 +2406,6 @@ class ActiveObjectOperations(BaseObjectOperations) :
                     _fmsg = "Failure while executing generic VM "
                     _fmsg += "post_boot configuration on "
                     _fmsg += obj_attr_list["name"] + '.\n'
-#                            _fmsg += _xfmsg
                 else :
 
                     self.osci.update_object_attribute(obj_attr_list["cloud_name"], "VM", obj_attr_list["uuid"], \
