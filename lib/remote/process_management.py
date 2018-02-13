@@ -120,6 +120,7 @@ class ProcessManagement :
             _cmd += " -o StrictHostKeyChecking=no"
             _cmd += " -o UserKnownHostsFile=/dev/null "
             _cmd += " -o BatchMode=yes " 
+            _cmd += " -o ServerAliveInterval=60 "
             _cmd += _username
             
             self.rsync_conn = _cmd
