@@ -23,7 +23,7 @@ echo "client connected $(date) params: $@" >> $logpath
 # This is deliberate: We *must* call redis-cli here when VPN_ONLY = $True 
 # because is this the only time which the VPN is fully connected. It cannot be
 # called earlier.
-(bash -c "sleep 5; redis-cli -h SERVER_BOOTSTRAP -n OSCI_DBID -p OSCI_PORT hset TEST_USER:CLOUD_NAME:VM:PENDING:UUID cloud_init_vpn $VPNIP" &)
+(bash -c "sleep 5; redis-cli -h SERVER_BOOTSTRAP -n OSCI_DBID -p OSCI_PORT hset TEST_USER:CLOUD_NAME:VM:PENDING:UUID cloud_init_vpn $VPNIP; exists=\$(redis-cli --raw -h SERVER_BOOTSTRAP -n OSCI_DBID -p OSCI_PORT hexists TEST_USER:CLOUD_NAME:VM:UUID cloud_init_vpn); if [ \$exists == 1 ] ; then redis-cli -h SERVER_BOOTSTRAP -n OSCI_DBID -p OSCI_PORT hset TEST_USER:CLOUD_NAME:VM:UUID cloud_init_vpn $VPNIP; fi" &)
 
 # Run cloudbench's cloud-agnostic userdata later. Backwards compatible with VPN_ONLY = False
 (/tmp/userscript.sh &)
