@@ -49,7 +49,7 @@ class BaseObjectOperations :
     TBD
     '''
     default_cloud = None
-    proc_man_os_command = ProcessManagement()
+    proc_man_os_command = ProcessManagement(connection_timeout = 120)
 
     @trace
     def __init__ (self, osci, msci, attached_clouds = []) :
