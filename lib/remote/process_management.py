@@ -109,7 +109,7 @@ class ProcessManagement :
 
             if self.connection_timeout :
                 _connection_timeout = " -o ConnectTimeout=" + str(self.connection_timeout) + ' '
-                _established_timeout = " -o ServerAliveInterval=" + str(self.connection_timeout) + ' '
+                _established_timeout = " -o ServerAliveCountMax=1 -o ServerAliveInterval=" + str(self.connection_timeout) + ' '
             else :
                 _connection_timeout = ''
                 _established_timeout = ''
