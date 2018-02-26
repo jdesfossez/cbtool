@@ -284,11 +284,10 @@ class GceCmds(CommonCloudFunctions) :
 
             sleep(int(obj_attr_list["update_frequency"])*5)
 
-            self.common_messages("VMC", obj_attr_list, "cleaning up vvs", 0, '')
-            
             _volume_list = self.get_instances({}, "vv", "all")
 
             if len(_volume_list) :
+                self.common_messages("VMC", obj_attr_list, "cleaning up vvs", 0, '')
                 for _volume in _volume_list :
                     if _volume["name"].count("cb-" + obj_attr_list["username"] + '-' + obj_attr_list["cloud_name"].lower()) :
                         if not "users" in _volume :
