@@ -1240,6 +1240,10 @@ class CommonCloudFunctions:
 write_files:"""
         if "userdata" in obj_attr_list and obj_attr_list["userdata"] :
             cloudconfig += """
+  - path: /etc/apt/apt.conf.d/10disable-auto-apt
+    content: |
+      APT::Periodic::Enable "0";
+    permissions: '0644'
   - path: /tmp/userscript.sh
     content: |
 """
@@ -1882,7 +1886,7 @@ packages:"""
                 if str(obj_attr_list["boot_from_volume"]).lower() == "true" :
                     _msg += ", from image \"" + obj_attr_list["imageid1"] + "\" (boot_volume)"
                 else :                
-                    _msg += ", with size "+ obj_attr_list["cloud_vv"] + " GB," 
+                    _msg += ", with size " + str(obj_attr_list["cloud_vv"]) + " GB,"
                 _msg += " on VMC \"" + obj_attr_list["vmc_name"] + "\""
                 cbdebug(_msg, True)
                 return '', ''
