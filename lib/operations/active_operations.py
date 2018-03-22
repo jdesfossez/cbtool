@@ -5017,7 +5017,7 @@ class ActiveObjectOperations(BaseObjectOperations) :
                     self.osci.set_object_state(cloud_name, "AI", object_uuid, "stopped")
                     sleep(_check_frequency)
                     first_stop = True
-                    cbdeubg("Attach complete. Pausing myself")
+                    cbdebug("Attach complete. Pausing myself")
                     continue
 
                 _load = self.get_load(cloud_name, _ai_attr_list, False, \
@@ -5099,7 +5099,7 @@ class ActiveObjectOperations(BaseObjectOperations) :
                         _proc_h.wait()
 
                     if str(_ai_attr_list["pause_after_run"]).lower() == "true" :
-                        cbdeubg("Run complete. Pausing myself")
+                        cbdebug("Run complete. Pausing myself")
                         self.osci.set_object_state(cloud_name, "AI", object_uuid, "stopped")
                 else :
                     # Will have to create something here later, probably using
