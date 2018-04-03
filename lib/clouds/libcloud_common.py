@@ -763,7 +763,6 @@ class LibcloudCmds(CommonCloudFunctions) :
 
             if self.use_volumes and "cloud_vv" in obj_attr_list and str(obj_attr_list["cloud_vv"]).lower() != "false" :
 
-                obj_attr_list["region"] = _region = obj_attr_list["vmc_name"]
                 obj_attr_list["cloud_vv_name"] = obj_attr_list["cloud_vv_name"].lower().replace("_", "-")
                 
                 obj_attr_list["last_known_state"] = "about to send volume create request"
@@ -796,6 +795,8 @@ class LibcloudCmds(CommonCloudFunctions) :
             _fmsg = str(obj.msg)
 
         except Exception, e :
+            for line in traceback.format_exc().splitlines() :
+                cbwarn(line, True)
             _status = 23
             _fmsg = str(e)
     
@@ -901,6 +902,10 @@ class LibcloudCmds(CommonCloudFunctions) :
 
             obj_attr_list["config_drive"] = False
 
+            # Currently, regions and VMCs are the same in libcloud based adapters
+            obj_attr_list["region"] = _region = obj_attr_list["vmc_name"]
+            extra.update(self.pre_vmcreate(obj_attr_list, extra))
+
             _status, _fmsg = self.vvcreate(obj_attr_list, LibcloudCmds.catalogs.cbtool[_credentials_list])
 
             self.common_messages("VM", obj_attr_list, "creating", 0, '')
@@ -925,10 +930,6 @@ class LibcloudCmds(CommonCloudFunctions) :
 
                 if len(keys) != len(tmp_keys) :
                     raise CldOpsException("Not all SSH keys exist. Check your configuration: " + obj_attr_list["key_name"], _status, True)
-
-            # Currently, regions and VMCs are the same in libcloud based adapters
-            obj_attr_list["region"] = _region = obj_attr_list["vmc_name"]
-            extra.update(self.pre_vmcreate(obj_attr_list, extra))
 
             if self.use_locations :
                 _location = [x for x in LibcloudCmds.locations if x.id == obj_attr_list["region"]][0]
