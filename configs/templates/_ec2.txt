@@ -69,6 +69,8 @@ IMAGE_PREFIX = $EMPTY
 IMAGE_SUFFIX = $EMPTY
 CLOUD_VV_TYPE = standard
 CLOUD_RV_TYPE = standard
+# By default, do not specify provisioned iops limit
+CLOUD_VV_IOPS = 0
 
 [AI_DEFAULTS : EC2_CLOUDCONFIG ]
 ATTACH_PARALLELISM = 10
