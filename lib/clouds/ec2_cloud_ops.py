@@ -658,7 +658,17 @@ class Ec2Cmds(CommonCloudFunctions) :
                 else :
                     _location = obj_attr_list["vmc_name"] + 'a'
                     
-                obj_attr_list["cloud_vv_instance"] = self.ec2conn.create_volume(int(obj_attr_list["cloud_vv"]), _location, volume_type = obj_attr_list["cloud_vv_type"])
+                if obj_attr_list["cloud_vv_iops"] != 0:
+                    obj_attr_list["cloud_vv_instance"] = self.ec2conn.create_volume(
+                            int(obj_attr_list["cloud_vv"]),
+                            _location,
+                            volume_type = obj_attr_list["cloud_vv_type"],
+                            iops = obj_attr_list["cloud_vv_iops"])
+                else:
+                    obj_attr_list["cloud_vv_instance"] = self.ec2conn.create_volume(
+                            int(obj_attr_list["cloud_vv"]),
+                            _location,
+                            volume_type = obj_attr_list["cloud_vv_type"])
 
                 sleep(int(obj_attr_list["update_frequency"]))
 
