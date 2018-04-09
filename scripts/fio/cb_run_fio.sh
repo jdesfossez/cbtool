@@ -38,6 +38,8 @@ sed -i "s^FIO_FILENAME^$FIO_DATA_DIR/$FIO_IOKIND^g" ~/*.fiojob
 sed -i "s^FIO_RUNTIME^$FIO_RUNTIME^g" ~/*.fiojob
 sed -i "s^FIO_IODEPTH^$FIO_IODEPTH^g" ~/*.fiojob
 
+sudo mkdir -p $FIO_DATA_DIR
+
 # for the randread test, we want to create the test file only once
 syslog_netcat "TMP: Test IOKIND $FIO_IOKIND"
 if test "$FIO_IOKIND" = "randread"; then
