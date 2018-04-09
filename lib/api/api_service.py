@@ -476,6 +476,7 @@ class API():
             # and when a user can safely issue `applist pending`, in order for the pending object to actually show up.
             # We need a better fix for this later to ensure that the pending object is registered before the API command returns.
             sleep(10)
+            return _res
         else :
             return self.active.objattach({}, parameters, "ai-attach")[2]
     
