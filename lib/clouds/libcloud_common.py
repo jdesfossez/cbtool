@@ -148,7 +148,7 @@ class LibcloudCmds(CommonCloudFunctions) :
         if not self.access and obj_attr_list and "access" in obj_attr_list :
             self.access = obj_attr_list["access"]
 
-        credentials = credentials_list.split(";")
+        credentials = credentials_list.split(":")
         if len(credentials) != (self.num_credentials + 1) :
             raise CldOpsException(self.get_description() + " needs at least " + str(self.num_credentials) + " credentials, including an arbitrary tag representing the tenant. Refer to the templates for examples.", 8499)
 
