@@ -64,14 +64,14 @@ class LibcloudCmds(CommonCloudFunctions) :
                 3. Each tenant only has one (1) credential for authentication: "bar" and "baz".
                 4. The configuration file would look like this:
                  [USER-DEFINED : CLOUDOPTION_FOO ]
-                 FOO_CREDENTIALS = user1:bar,user2:baz
+                 FOO_CREDENTIALS = user1:bar;user2:baz
              Example 2)
                 1. Cloud is named "HAPPY"
                 2. There are three tenants named "not", "so", and "lucky"
                 3. Each tenant has the same access_key and access_token, two (2) credentials each as "foo" and "bar"
                 4. The configuration file would look like this:
                  [USER-DEFINED : CLOUDOPTION_HAPPY ]
-                 HAPPY_CREDENTIALS = not:foo:bar,so:foo:bar,lucky:foo:bar
+                 HAPPY_CREDENTIALS = not:foo:bar;so:foo:bar;lucky:foo:bar
             In Example 1), @num_credentials = 1
             In Example 2), @num_credentials = 2
             By, default we assume Oauth-driven clouds that have both an access token and an access key.
@@ -148,7 +148,7 @@ class LibcloudCmds(CommonCloudFunctions) :
         if not self.access and obj_attr_list and "access" in obj_attr_list :
             self.access = obj_attr_list["access"]
 
-        credentials = credentials_list.split(":")
+        credentials = credentials_list.split(";")
         if len(credentials) != (self.num_credentials + 1) :
             raise CldOpsException(self.get_description() + " needs at least " + str(self.num_credentials) + " credentials, including an arbitrary tag representing the tenant. Refer to the templates for examples.", 8499)
 
@@ -235,7 +235,7 @@ class LibcloudCmds(CommonCloudFunctions) :
             _fmsg = "An error has occurred, but no error message was captured"
 
             _key_pair_found = False
-            for credentials_list in credentials.split(","):
+            for credentials_list in credentials.split(";"):
                 _status, _msg, _local_conn, _hostname = self.connect(credentials_list, vmc_defaults)
                 _key_pair_found = self.check_ssh_key(vmc_name, self.determine_key_name(vm_defaults), vm_defaults, False, _local_conn)
 
@@ -339,13 +339,13 @@ class LibcloudCmds(CommonCloudFunctions) :
             _status = 100
             _fmsg = "An error has occurred, but no error message was captured"
 
-            for credentials_list in obj_attr_list["credentials"].split(","):
+            for credentials_list in obj_attr_list["credentials"].split(";"):
                 _status, _msg, _local_conn, _hostname = self.connect(credentials_list)
     
             _running_instances = True
             while _running_instances :
                 _running_instances = False
-                for credentials_list in obj_attr_list["credentials"].split(","):
+                for credentials_list in obj_attr_list["credentials"].split(";"):
                     credentials = credentials_list.split(":")
                     tenant = credentials[0]
                     obj_attr_list["tenant"] = tenant
@@ -379,7 +379,7 @@ class LibcloudCmds(CommonCloudFunctions) :
                 _running_volumes = True
                 while _running_volumes :
                     _running_volumes = False
-                    for credentials_list in obj_attr_list["credentials"].split(","):
+                    for credentials_list in obj_attr_list["credentials"].split(";"):
                         credentials = credentials_list.split(":")
                         tenant = credentials[0]
                         self.common_messages("VMC", obj_attr_list, "cleaning up vvs", 0, '')
@@ -433,7 +433,7 @@ class LibcloudCmds(CommonCloudFunctions) :
             else :
                 _status = 0
 
-            for credentials_list in obj_attr_list["credentials"].split(","):                
+            for credentials_list in obj_attr_list["credentials"].split(";"):
                 _x, _y, _z, _hostname = self.connect(credentials_list, obj_attr_list)
             
             obj_attr_list["cloud_hostname"] = _hostname
@@ -525,7 +525,7 @@ class LibcloudCmds(CommonCloudFunctions) :
                                                       "VMC", False, _vmc_uuid, \
                                                       False)
                 
-                for credentials_list in _vmc_attr_list["credentials"].split(","):
+                for credentials_list in _vmc_attr_list["credentials"].split(";"):
                     _status, _msg, _local_conn, _hostname = self.connect(credentials_list)
                     
                     _instance_list = _local_conn.list_nodes()
@@ -1446,7 +1446,7 @@ class LibcloudCmds(CommonCloudFunctions) :
         TBD
         ''' 
         vmc_defaults = self.osci.get_object(cloud_name, "GLOBAL", False, "vmc_defaults", False)
-        _credentials_lists = vmc_defaults["credentials"].split(",")
+        _credentials_lists = vmc_defaults["credentials"].split(";")
         lock = self.lock(cloud_name, "VMC", "shared_access_token_counter", "credentials_list")
 
         assert(lock)
