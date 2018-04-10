@@ -241,6 +241,7 @@ class Ec2Cmds(CommonCloudFunctions) :
                     for _instance in _reservation.instances :
                         if "Name" in _instance.tags :
                             if _instance.tags[u'Name'].count("cb-" + obj_attr_list["username"] + "-" + obj_attr_list["cloud_name"]) and _instance.state == u'running' :
+                                cbdebug("Terminating instance: " + _instance.tags[u'Name'], True)
                                 _instance.terminate()
                                 _running_instances = True
                 sleep(int(obj_attr_list["update_frequency"]))
@@ -254,9 +255,7 @@ class Ec2Cmds(CommonCloudFunctions) :
             if len(_volumes) :
                 for unattachedvol in _volumes :
                     if "Name" in unattachedvol.tags and unattachedvol.tags[u'Name'].count("cb-" + obj_attr_list["username"] + "-" + obj_attr_list["cloud_name"]) and unattachedvol.status == 'available' :
-                        _msg = unattachedvol.id + ' ' + unattachedvol.status
-                        _msg += "... was deleted"
-                        cbdebug(_msg)
+                        cbdebug("Terminating volume: " + unattachedvol.tags[u'Name'], True)
                         unattachedvol.delete()
                     else:
                         _msg = unattachedvol.id + ' ' + unattachedvol.status
@@ -485,6 +484,7 @@ class Ec2Cmds(CommonCloudFunctions) :
 
                 if len(_instance) :    
                     _volume=_instance[0]
+                    return _volume
                 else :
                     return False
                     
@@ -658,7 +658,7 @@ class Ec2Cmds(CommonCloudFunctions) :
                 else :
                     _location = obj_attr_list["vmc_name"] + 'a'
                     
-                if obj_attr_list["cloud_vv_iops"] != 0:
+                if obj_attr_list["cloud_vv_iops"] != "0":
                     obj_attr_list["cloud_vv_instance"] = self.ec2conn.create_volume(
                             int(obj_attr_list["cloud_vv"]),
                             _location,
@@ -726,7 +726,9 @@ class Ec2Cmds(CommonCloudFunctions) :
                         _status = _instance.status
     
                         if _status == 'available' :
+                            cbdebug("Deleting...", True)
                             _instance.delete()                 
+                            cbdebug("Deleted.", True)
                             _volume_detached = True
     
                         else :
@@ -737,9 +739,10 @@ class Ec2Cmds(CommonCloudFunctions) :
                             _msg += "is still \"" + _status + "\". "
                             _msg += "Will wait " + str(_wait)
                             _msg += " seconds and try again."
-                            cbdebug(_msg)
+                            cbdebug(_msg, True)
     
                             sleep(_wait)
+                            _instance = self.get_instances(obj_attr_list, "vv", identifier)
                             _curr_tries += 1                           
     
             if _curr_tries > _max_tries  :
