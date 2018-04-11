@@ -436,7 +436,7 @@ class LibcloudCmds(CommonCloudFunctions) :
             for credentials_list in obj_attr_list["credentials"].split(";"):
                 _x, _y, _z, _hostname = self.connect(credentials_list, obj_attr_list)
             
-            obj_attr_list["cloud_hostname"] = _hostname
+            obj_attr_list["cloud_hostname"] = _hostname + "_" + obj_attr_list["name"]
 
             # Public clouds don't really have "hostnames" - they have a single endpoint for all
             # regions and VMCs. However, in Redis this IP gets tagged
@@ -446,7 +446,7 @@ class LibcloudCmds(CommonCloudFunctions) :
             # I'm not totally sure what this means for an Openstack + Libcloud adapter,
             # but we'll cross that bridge when we get to it.
             
-            obj_attr_list["cloud_ip"] = _hostname + "." + gethostbyname(self.tldomain)
+            obj_attr_list["cloud_ip"] = _hostname + "." + gethostbyname(self.tldomain) + "_" + obj_attr_list["name"]
             obj_attr_list["arrival"] = int(time())
 
             if str(obj_attr_list["discover_hosts"]).lower() == "true" :
