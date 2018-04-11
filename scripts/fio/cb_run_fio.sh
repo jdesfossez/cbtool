@@ -17,11 +17,10 @@ FIO_DIRECT=$(get_my_ai_attribute_with_default fio_direct 1)
 FIO_IOKIND=$(get_my_ai_attribute_with_default fio_iokind randread)
 # file size to test in MB
 FIO_FILE_SIZE=$(get_my_ai_attribute_with_default fio_file_size 128)
-FIO_DATA_DIR=$(get_my_ai_attribute_with_default fio_filename /fiotest)
-# FIXME: should we use LOAD_DURATION here ?
-FIO_RUNTIME=$(get_my_ai_attribute_with_default fio_runtime 60)
+FIO_DATA_DIR=$(get_my_ai_attribute_with_default fio_data_dir /fiotest)
 FIO_IODEPTH=$(get_my_ai_attribute_with_default fio_iodepth 8)
-FIO_DATA_FSTYP=$(get_my_ai_attribute_with_default fio_data_fstyp ext4)
+# seconds
+FIO_RUNTIME=$LOAD_DURATION
 
 # The randread and randwrite templates have been replaced by a
 # fully-parameterized template.
