@@ -1182,6 +1182,8 @@ class PassiveObjectOperations(BaseObjectOperations) :
             _fmsg = str(obj.msg)
 
         except Exception, e :
+            for line in traceback.format_exc().splitlines() :
+                cbwarn(line, True)
             _status = 23
             _fmsg = str(e)
 
