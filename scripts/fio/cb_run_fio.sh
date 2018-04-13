@@ -17,11 +17,10 @@ FIO_DIRECT=$(get_my_ai_attribute_with_default fio_direct 1)
 FIO_IOKIND=$(get_my_ai_attribute_with_default fio_iokind randread)
 # file size to test in MB
 FIO_FILE_SIZE=$(get_my_ai_attribute_with_default fio_file_size 128)
-FIO_DATA_DIR=$(get_my_ai_attribute_with_default fio_filename /fiotest)
-# FIXME: should we use LOAD_DURATION here ?
-FIO_RUNTIME=$(get_my_ai_attribute_with_default fio_runtime 60)
+FIO_DATA_DIR=$(get_my_ai_attribute_with_default fio_data_dir /fiotest)
 FIO_IODEPTH=$(get_my_ai_attribute_with_default fio_iodepth 8)
-FIO_DATA_FSTYP=$(get_my_ai_attribute_with_default fio_data_fstyp ext4)
+# seconds
+FIO_RUNTIME=$LOAD_DURATION
 
 # The randread and randwrite templates have been replaced by a
 # fully-parameterized template.
@@ -40,15 +39,13 @@ sed -i "s^FIO_IODEPTH^$FIO_IODEPTH^g" ~/*.fiojob
 
 sudo mkdir -p $FIO_DATA_DIR
 
-# for the randread test, we want to create the test file only once
-syslog_netcat "TMP: Test IOKIND $FIO_IOKIND"
-if test "$FIO_IOKIND" = "randread"; then
-	syslog_netcat "TMP: HERE"
+# for the randread and read tests, we want to create the test file only once
+if test "$FIO_IOKIND" = "randread" -o "$FIO_IOKIND" = "read"; then
 	if ! test -e $FIO_DATA_DIR/$FIO_IOKIND; then
-		syslog_netcat "TMP: creating data file $FIO_DATA_DIR/$FIO_IOKIND"
+		syslog_netcat "Creating FIO data file $FIO_DATA_DIR/$FIO_IOKIND"
 		sudo rm -rf $FIO_DATA_DIR/*
 		sudo dd if=/dev/zero of=$FIO_DATA_DIR/$FIO_IOKIND bs=1M count=$FIO_FILE_SIZE
-		syslog_netcat "TMP: creating data file $FIO_DATA_DIR/$FIO_IOKIND done"
+		syslog_netcat "Creating FIO data file $FIO_DATA_DIR/$FIO_IOKIND done"
 	fi
 else
 	sudo rm -rf $FIO_DATA_DIR/*
