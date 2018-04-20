@@ -11,3 +11,4 @@ name=fiofile
 iodepth=FIO_IODEPTH
 bs=FIO_BS
 rw=FIO_IOKIND
+sync=FIO_SYNC

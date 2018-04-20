@@ -42,6 +42,7 @@ FIO_DATA_DIR = /fiotest
 FIO_DATA_FSTYP = ext4
 FIO_RUNTIME = 60
 FIO_IODEPTH = 8
+FIO_SYNC = 0
 
 # Inter-Virtual Application instances (inter-AI) synchronized execution. Entirely optional
 #SYNC_COUNTER_NAME = synchronization_counter

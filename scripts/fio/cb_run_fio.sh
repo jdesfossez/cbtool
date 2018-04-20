@@ -19,6 +19,7 @@ FIO_IOKIND=$(get_my_ai_attribute_with_default fio_iokind randread)
 FIO_FILE_SIZE=$(get_my_ai_attribute_with_default fio_file_size 128)
 FIO_DATA_DIR=$(get_my_ai_attribute_with_default fio_data_dir /fiotest)
 FIO_IODEPTH=$(get_my_ai_attribute_with_default fio_iodepth 8)
+FIO_SYNC=$(get_my_ai_attribute_with_default fio_sync 0)
 # seconds
 FIO_RUNTIME=$LOAD_DURATION
 
@@ -36,6 +37,7 @@ sed -i "s^FIO_DATA_DIR^$FIO_DATA_DIR^g" ~/*.fiojob
 sed -i "s^FIO_FILENAME^$FIO_DATA_DIR/$FIO_IOKIND^g" ~/*.fiojob
 sed -i "s^FIO_RUNTIME^$FIO_RUNTIME^g" ~/*.fiojob
 sed -i "s^FIO_IODEPTH^$FIO_IODEPTH^g" ~/*.fiojob
+sed -i "s^FIO_SYNC^$FIO_SYNC^g" ~/*.fiojob
 
 sudo mkdir -p $FIO_DATA_DIR
 
