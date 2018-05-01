@@ -839,7 +839,12 @@ class Ec2Cmds(CommonCloudFunctions) :
             else:
                 _iops = obj_attr_list["cloud_rv_iops"]
 
-            _bdm['/dev/sda1'] = BlockDeviceType(volume_type = obj_attr_list["cloud_rv_type"], delete_on_termination=True, iops=_iops)
+            if "cloud_rv" in obj_attr_list and obj_attr_list["cloud_rv"] != 0:
+                _size = obj_attr_list["cloud_rv"]
+            else:
+                _size = None
+
+            _bdm['/dev/sda1'] = BlockDeviceType(volume_type = obj_attr_list["cloud_rv_type"], delete_on_termination=True, iops=_iops, size=_size)
 
             self.common_messages("VM", obj_attr_list, "creating", 0, '')
             
