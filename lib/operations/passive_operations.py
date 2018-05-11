@@ -543,8 +543,6 @@ class PassiveObjectOperations(BaseObjectOperations) :
             _fmsg = str(obj.msg)
 
         except self.osci.ObjectStoreMgdConnException, obj :
-            for line in traceback.format_exc().splitlines() :
-                cbwarn(line, True)
             _status = 8
             _fmsg = str(obj.msg)
 
@@ -1182,8 +1180,6 @@ class PassiveObjectOperations(BaseObjectOperations) :
             _fmsg = str(obj.msg)
 
         except Exception, e :
-            for line in traceback.format_exc().splitlines() :
-                cbwarn(line, True)
             _status = 23
             _fmsg = str(e)
 
@@ -1252,8 +1248,6 @@ class PassiveObjectOperations(BaseObjectOperations) :
             _fmsg = str(obj.msg)
 
         except Exception, e :
-            for line in traceback.format_exc().splitlines() :
-                cbwarn(line, True)
             _status = 23
             _fmsg = str(e)
 

@@ -134,7 +134,7 @@ class SlrCmds(CommonCloudFunctions) :
             
             _key_pair_found = self.check_ssh_key(vmc_name, self.determine_key_name(vm_defaults), vm_defaults, False, vmc_name)
             
-            _detected_imageids = self.check_images(vmc_name, vm_templates, access)
+            _detected_imageids = self.check_images(vmc_name, vm_templates, vmc_name)
 
             if not (_run_netname_found and _prov_netname_found and _key_pair_found) :
                 _msg = "Check the previous errors, fix it (using GCE's web"
@@ -460,12 +460,10 @@ class SlrCmds(CommonCloudFunctions) :
         try :
             _search_opts = {}
 
-            object_mask = 'id, globalIdentifier, hostname, domain, fullyQualifiedDomainName, primaryBackendIpAddress, primaryIpAddress, lastKnownPowerState.name, powerState, maxCpu, maxMemory, datacenter, activeTransaction.transactionStatus[friendlyName,name], status, provisionDate'
-
             if identifier != "all" :
-                _instances = self.nodeman.list_instances(mask=object_mask,datacenter = obj_attr_list["vmc_name"], hostname = identifier)
+                _instances = self.nodeman.list_instances(datacenter = obj_attr_list["vmc_name"], hostname = identifier)
             else :
-                _instances = self.nodeman.list_instances(mask=object_mask,datacenter = obj_attr_list["vmc_name"])
+                _instances = self.nodeman.list_instances(datacenter = obj_attr_list["vmc_name"])
 
             if not self.nodeman:
                 self.connect(obj_attr_list["access"], obj_attr_list["credentials"], \
@@ -601,13 +599,19 @@ class SlrCmds(CommonCloudFunctions) :
             
             if _instance :
                 
-                if "provisionDate" not in _instance :
+                if "activeTransaction" in _instance :
                     return False
                 
-                if _instance["provisionDate"] == "" :
-                    return False
+                if _instance["status"]["name"].lower().count("active") : 
+                    return True
 
-                return True
+                if _instance["status"]["name"].lower().count("error") :
+                    _msg = "Instance \"" + obj_attr_list["cloud_vm_name"] + "\"" 
+                    _msg += " reported an error (from " + self.get_description() + ")"
+                    _status = 1870
+                    cberr(_msg)
+                    if fail :
+                        raise CldOpsException(_msg, _status)                    
 
             return False
 

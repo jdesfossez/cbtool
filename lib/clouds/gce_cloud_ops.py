@@ -555,8 +555,6 @@ class GceCmds(CommonCloudFunctions) :
             raise CldOpsException(_fmsg, _status)
         
         except Exception, _fmsg :
-            #for line in traceback.format_exc().splitlines() :
-            #    cbwarn(line, True)
             return []
 
     @trace
@@ -605,8 +603,6 @@ class GceCmds(CommonCloudFunctions) :
             raise CldOpsException(_fmsg, _status)
         
         except Exception, e :
-            for line in traceback.format_exc().splitlines() :
-                cbwarn(line, True)
             _status = 23
             _fmsg = str(e)
             
@@ -630,8 +626,6 @@ class GceCmds(CommonCloudFunctions) :
             _status = 0
 
         except Exception, e :
-            for line in traceback.format_exc().splitlines() :
-                cbwarn(line, True)
             _status = 23
             _fmsg = str(e)
             
@@ -655,8 +649,6 @@ class GceCmds(CommonCloudFunctions) :
             _status = 0
 
         except Exception, e :
-            for line in traceback.format_exc().splitlines() :
-                cbwarn(line, True)
             _status = 23
             _fmsg = str(e)
             
@@ -700,8 +692,6 @@ class GceCmds(CommonCloudFunctions) :
             raise CldOpsException(_fmsg, _status)
         
         except Exception, msg :
-            for line in traceback.format_exc().splitlines() :
-                cbwarn(line, True)
             _fmsg = str(msg)
             cberr(_fmsg)
             _status = 23
