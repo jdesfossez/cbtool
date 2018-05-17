@@ -839,7 +839,7 @@ class Ec2Cmds(CommonCloudFunctions) :
             else:
                 _iops = obj_attr_list["cloud_rv_iops"]
 
-            if "cloud_rv" in obj_attr_list and obj_attr_list["cloud_rv"] != 0:
+            if "cloud_rv" in obj_attr_list and obj_attr_list["cloud_rv"] != "0":
                 _size = obj_attr_list["cloud_rv"]
             else:
                 _size = None
