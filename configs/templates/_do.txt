@@ -112,6 +112,7 @@ DRIVER_TRADELITE = size:4gb, imageid1:cb_tradelite
 FEN_HPC = size:4gb, imageid1:cb_hpcc
 FILEBENCH = size:2gb, imageid1:cb_filebench
 FIO = size:2gb, imageid1:cb_fio
+KERNBENCH = size:8gb, imageid1:cb_kernbench
 GERONIMO = size:4gb, imageid1:cb_open_daytrader
 GIRAPHMASTER = size:2gb, imageid1:cb_giraph
 GIRAPHSLAVE = size:4gb, imageid1:cb_giraph
