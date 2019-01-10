@@ -10,8 +10,7 @@ LOAD_PROFILE=$(echo ${LOAD_PROFILE} | tr '[:upper:]' '[:lower:]')
 
 KERNBENCH_NR_CPUS=$(get_my_ai_attribute_with_default kernbench_nr_cpus 0)
 KERNBENCH_DATA_DIR=$(get_my_ai_attribute_with_default kernbench_data_dir /kernbench)
-KERNBENCH_KERNEL_URL=$(get_my_ai_attribute_with_default kernbench_kernel_url \
-	https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.16.8.tar.xz)
+KERNBENCH_PATH=$(get_my_ai_attribute_with_default kernbench_path /foo)
 
 # Override the default 4*cpu for make -j <nr>
 if test $KERNBENCH_NR_CPUS = 0; then
@@ -20,16 +19,16 @@ else
 	NRJOBS="-o $KERNBENCH_NR_CPUS"
 fi
 
-CMDLINE="sudo ./kernbenchloadgen.sh $dir $NRJOBS"
+CMDLINE="sudo $KERNBENCH_PATH/kernbenchloadgen.sh $KERNBENCH_PATH $NRJOBS"
 
 execute_load_generator "${CMDLINE}" ${RUN_OUTPUT_FILE} ${LOAD_DURATION}
 
-elapsed_time=$(grep "Elapsed Time" ${dir}/kernbench.log | awk '{print $3}')
-user_time=$(grep "User Time" ${dir}/kernbench.log | awk '{print $3}')
-system_time=$(grep "System Time" ${dir}/kernbench.log | awk '{print $3}')
-percent_cpu=$(grep "Percent CPU" ${dir}/kernbench.log | awk '{print $3}')
-context_switches=$(grep "Context Switches" ${dir}/kernbench.log | awk '{print $3}')
-sleeps=$(grep "Sleeps" ${dir}/kernbench.log | awk '{print $2}')
+elapsed_time=$(grep "Elapsed Time" ${KERNBENCH_PATH}/kernbench.log | awk '{print $3}')
+user_time=$(grep "User Time" ${KERNBENCH_PATH}/kernbench.log | awk '{print $3}')
+system_time=$(grep "System Time" ${KERNBENCH_PATH}/kernbench.log | awk '{print $3}')
+percent_cpu=$(grep "Percent CPU" ${KERNBENCH_PATH}/kernbench.log | awk '{print $3}')
+context_switches=$(grep "Context Switches" ${KERNBENCH_PATH}/kernbench.log | awk '{print $3}')
+sleeps=$(grep "Sleeps" ${KERNBENCH_PATH}/kernbench.log | awk '{print $2}')
 
 ~/cb_report_app_metrics.py \
 elapsed_time:$elapsed_time:s \
@@ -49,7 +48,7 @@ echo "~/cb_report_app_metrics.py \
 	sleeps:$sleeps:nr \
 	$(common_metrics)" >>/tmp/metrics.txt
 
-rm ${dir}/kernbench.log
+rm ${KERNBENCH_PATH}/kernbench.log
 
 unset_load_gen
 

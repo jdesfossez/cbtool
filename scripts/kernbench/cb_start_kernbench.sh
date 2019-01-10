@@ -23,7 +23,8 @@ START=`provision_application_start`
 syslog_netcat "Start storage setup for kernbench on ${SHORT_HOSTNAME}"
 
 KERNBENCH_DATA_DIR=$(get_my_ai_attribute_with_default kernbench_data_dir /kernbench)
-mv ~/linux $KERNBENCH_DATA_DIR/
+KERNBENCH_PATH=$(get_my_ai_attribute_with_default kernbench_path /foo)
+mv $KERNBENCH_PATH/linux $KERNBENCH_DATA_DIR/
 sync
 
 syslog_netcat "Storage setup for kernbench on ${SHORT_HOSTNAME} - OK"

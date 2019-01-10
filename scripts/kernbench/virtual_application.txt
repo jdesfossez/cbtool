@@ -33,7 +33,7 @@ START = cb_run_kernbench.sh
 # VApp-specific modifier parameters. Commented attributes imply default values assumed
 # NR_CPUS = 0 means use kernbench "optimal runs": 4*cpu
 KERNBENCH_NR_CPUS = 0
-KERNBENCH_KERNEL_URL = https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.16.8.tar.xz
+KERNBENCH_PATH = ~/foo
 KERNBENCH_DATA_DIR = /kernbench
 KERNBENCH_DATA_FSTYP = ext4
 
