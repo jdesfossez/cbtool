@@ -19,7 +19,7 @@ else
 	NRJOBS="-o $KERNBENCH_NR_CPUS"
 fi
 
-CMDLINE="sudo $KERNBENCH_PATH/kernbenchloadgen.sh $KERNBENCH_PATH $NRJOBS"
+CMDLINE="sudo ./kernbenchloadgen.sh $KERNBENCH_PATH $KERNBENCH_DATA_DIR $NRJOBS"
 
 execute_load_generator "${CMDLINE}" ${RUN_OUTPUT_FILE} ${LOAD_DURATION}
 
