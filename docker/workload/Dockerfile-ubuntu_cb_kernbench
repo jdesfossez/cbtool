@@ -2,7 +2,7 @@ FROM REPLACE_NULLWORKLOAD_UBUNTU
 
 # kernbuild-install-pm
 RUN apt-get update
-RUN apt-get install -y build-essential bison flex libelf-dev libssl-dev bc
+RUN apt-get install -y build-essential bison flex libelf-dev libssl-dev bc time
 # kernbuild-install-pm
 
 # kernbench-install-git
