@@ -9,6 +9,8 @@ MYSQL_ROOT_PASSWORD=`get_my_ai_attribute_with_default mysql_root_password temp4n
 MYSQL_NONROOT_USER=`get_my_ai_attribute_with_default mysql_nonroot_user sysbench`
 MYSQL_NONROOT_PASSWORD=`get_my_ai_attribute_with_default mysql_nonroot_password sysbench`
 MYSQL_DATA_DIR=`get_my_ai_attribute_with_default mysql_data_dir /sysbench`
+MYSQL_CONF_FILE=`get_my_ai_attribute_with_default mysql_conf_file /etc/mysql/mysql.conf.d/mysqld.cnf`
+MYSQL_RAM_PERCENTAGE=`get_my_ai_attribute_with_default mysql_ram_percentage 70`
 
 MYSQL_IPS=`get_ips_from_role mysql`
 LOAD_GENERATOR_TARGET_IP=`get_my_ai_attribute load_generator_target_ip`
@@ -64,6 +66,14 @@ then
 else
     syslog_netcat "The value of the parameter \"GENERATE_DATA\" is \"false\". Will bypass data generation for the Sysbench load profile \"${LOAD_PROFILE}\""
     
+fi
+
+# Check if mysql has the right cache size or update it.
+kb=$(cat /proc/meminfo  | sed -e "s/ \+/ /g" | grep MemTotal | cut -d " " -f 2)
+mb=$(echo "$kb / 1024 * ${MYSQL_RAM_PERCENTAGE} / 100" | bc)
+if ! grep "innodb_buffer_pool_size = ${mb}M" ${MYSQL_CONF_FILE} >/dev/null; then
+	${SUDO_CMD} su -c "sed -i 's/innodb_buffer_pool_size.*/innodb_buffer_pool_size = ${mb}M/' /etc/mysql/mysql.conf.d/mysqld.cnf"
+	service mysql restart
 fi
 
 CMDLINE="sysbench --test=oltp ${CONN_STR} --oltp-table-size=${TABLE_SIZE} --oltp-test-mode=${LOAD_PROFILE} --oltp-read-only=${READ_ONLY} --num-threads=${LOAD_LEVEL} --max-time=${LOAD_DURATION} --max-requests=0 run"
