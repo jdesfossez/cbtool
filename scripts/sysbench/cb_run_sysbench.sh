@@ -16,6 +16,7 @@ MYSQL_IPS=`get_ips_from_role mysql`
 LOAD_GENERATOR_TARGET_IP=`get_my_ai_attribute load_generator_target_ip`
 TABLE_SIZE=`get_my_ai_attribute_with_default table_size 10000`
 READ_ONLY=`get_my_ai_attribute_with_default read_only off`
+NR_RANGE_QUERIES=`get_my_ai_attribute_with_default nr_range_queries 1`
 
 CONN_STR="--mysql-host=${LOAD_GENERATOR_TARGET_IP} --mysql-db=${MYSQL_DATABASE_NAME} --mysql-user=${MYSQL_NONROOT_USER} --mysql-password=${MYSQL_NONROOT_PASSWORD}"
 
@@ -76,7 +77,8 @@ if ! grep "innodb_buffer_pool_size = ${mb}M" ${MYSQL_CONF_FILE} >/dev/null; then
 	service mysql restart
 fi
 
-CMDLINE="sysbench --test=oltp ${CONN_STR} --oltp-table-size=${TABLE_SIZE} --oltp-test-mode=${LOAD_PROFILE} --oltp-read-only=${READ_ONLY} --num-threads=${LOAD_LEVEL} --max-time=${LOAD_DURATION} --max-requests=0 run"
+CMDLINE="sysbench --test=oltp ${CONN_STR} --oltp-table-size=${TABLE_SIZE} --oltp-test-mode=${LOAD_PROFILE} --oltp-read-only=${READ_ONLY} --num-threads=${LOAD_LEVEL} --max-time=${LOAD_DURATION} --max-requests=0 --oltp-simple-ranges=${NR_RANGE_QUERIES} --oltp-sum-ranges=${NR_RANGE_QUERIES} --oltp-order-ranges=${NR_RANGE_QUERIES} --oltp-distinct-ranges=${NR_RANGE_QUERIES} run"
+
 execute_load_generator "${CMDLINE}" ${RUN_OUTPUT_FILE} ${LOAD_DURATION}
 
 tp=$(cat $RUN_OUTPUT_FILE | grep transactions | grep per | cut -d '(' -f 2 | cut -d ' ' -f 1)
