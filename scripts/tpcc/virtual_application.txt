@@ -51,3 +51,15 @@ TABLES = 1
 MYSQL_CONF_FILE = /etc/mysql/mysql.conf.d/mysqld.cnf
 # Default to 60% of main memory
 MYSQL_RAM_PERCENTAGE = 60
+
+# Default Ubuntu values
+MYSQL_INNODB_IO_CAPACITY = 200
+MYSQL_INNODB_LOG_FILE_SIZE = 48M
+MYSQL_QUERY_CACHE_SIZE = 16M
+MYSQL_TMP_TABLE_SIZE = 16M
+MYSQL_TABLE_OPEN_CACHE = 2000
+
+# Install Percona Monitoring and Management
+MYSQL_ENABLE_PMM_CLIENT = False
+# Connect the Percona Monitoring and Management client to this server IP:port
+MYSQL_PMM_SERVER = 0.0.0.0:80
